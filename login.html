@@ -1,1 +1,258 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
 
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Animix - Login</title>
+
+
+<style>
+
+body{
+
+margin:0;
+background:#111;
+color:white;
+font-family:Arial,sans-serif;
+
+}
+
+
+.container{
+
+max-width:400px;
+margin:50px auto;
+padding:20px;
+background:#222;
+border-radius:10px;
+text-align:center;
+
+}
+
+
+h1{
+
+color:#ffcc00;
+
+}
+
+
+input{
+
+width:90%;
+padding:12px;
+margin:10px;
+border:none;
+border-radius:8px;
+
+}
+
+
+button{
+
+background:#ffcc00;
+border:none;
+padding:12px 20px;
+border-radius:8px;
+cursor:pointer;
+font-weight:bold;
+
+}
+
+
+a{
+
+color:white;
+text-decoration:none;
+
+}
+
+</style>
+
+
+</head>
+
+
+<body>
+
+
+<div class="container">
+
+
+<h1>📚 Animix</h1>
+
+
+<h2>Login</h2>
+
+
+
+<input id="usuario" placeholder="Usuário">
+
+
+<input id="senha" type="password" placeholder="Senha">
+
+
+<button onclick="entrar()">
+
+Entrar
+
+</button>
+
+
+
+
+<h2>Cadastro</h2>
+
+
+
+<button onclick="cadastrar()">
+
+Criar conta
+
+</button>
+
+
+
+<p id="mensagem"></p>
+
+
+
+<br>
+
+
+<a href="index.html">
+
+🏠 Voltar
+
+</a>
+
+
+
+</div>
+
+
+
+
+
+
+<script>
+
+
+
+function cadastrar(){
+
+
+let usuario =
+document.getElementById("usuario").value;
+
+
+let senha =
+document.getElementById("senha").value;
+
+
+
+if(usuario==="" || senha===""){
+
+
+alert("Preencha todos os campos");
+
+return;
+
+}
+
+
+
+
+localStorage.setItem(
+
+"usuario",
+
+JSON.stringify({
+
+nome:usuario,
+senha:senha
+
+})
+
+);
+
+
+
+document.getElementById("mensagem").innerHTML =
+"✅ Cadastro realizado";
+
+
+}
+
+
+
+
+
+
+function entrar(){
+
+
+let salvo =
+JSON.parse(localStorage.getItem("usuario"));
+
+
+
+let usuario =
+document.getElementById("usuario").value;
+
+
+let senha =
+document.getElementById("senha").value;
+
+
+
+
+if(salvo && salvo.nome===usuario && salvo.senha===senha){
+
+
+
+localStorage.setItem(
+"login",
+"sim"
+);
+
+
+
+localStorage.setItem(
+"nomeUsuario",
+usuario
+);
+
+
+
+location.href="index.html";
+
+
+
+}
+
+else{
+
+
+document.getElementById("mensagem").innerHTML =
+"❌ Usuário ou senha incorretos";
+
+
+}
+
+
+
+}
+
+
+
+</script>
+
+
+
+</body>
+
+</html>
