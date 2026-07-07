@@ -1,10 +1,92 @@
 <!DOCTYPE html>
-<html>
+<html lang="pt-BR">
 <head>
-  <title>Animix</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Animix - Mangás</title>
+
+<style>
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #111;
+    color: white;
+}
+
+header {
+    background: #222;
+    padding: 20px;
+    text-align: center;
+}
+
+h1 {
+    color: #ffcc00;
+}
+
+.pesquisa {
+    width: 80%;
+    padding: 12px;
+    border-radius: 8px;
+    border: none;
+}
+
+.container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+    padding: 20px;
+}
+
+.manga {
+    background: #222;
+    width: 180px;
+    padding: 15px;
+    border-radius: 10px;
+    text-align: center;
+}
+
+.manga img {
+    width: 150px;
+    height: 220px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+button {
+    background: #ffcc00;
+    border: none;
+    padding: 10px;
+    border-radius: 8px;
+    cursor: pointer;
+}
+</style>
+
 </head>
+
 <body>
-  <h1>Bem-vindo ao Animix</h1>
-  <p>Meu primeiro site de animações está funcionando!</p>
+
+<header>
+<h1>📚 Animix Mangás</h1>
+<input class="pesquisa" placeholder="Pesquisar mangá...">
+</header>
+
+<div class="container">
+
+<div class="manga">
+<img src="https://via.placeholder.com/150x220">
+<h3>Mangá Exemplo</h3>
+<button>Ler agora</button>
+</div>
+
+<div class="manga">
+<img src="https://via.placeholder.com/150x220">
+<h3>Outro Mangá</h3>
+<button>Ler agora</button>
+</div>
+
+</div>
+
 </body>
 </html>
