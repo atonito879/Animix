@@ -6,72 +6,98 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Animix - Minha Biblioteca</title>
+<title>Animix - Mangá</title>
+
 
 <style>
 
 body{
+
 margin:0;
+padding-bottom:80px;
 background:#111;
 color:white;
 font-family:Arial,sans-serif;
+
 }
 
 
 header{
+
 background:#222;
 padding:20px;
 text-align:center;
+
 }
 
 
 h1{
+
 color:#ffcc00;
+
 }
 
 
-.catalogo{
 
-display:flex;
-flex-wrap:wrap;
-justify-content:center;
-gap:20px;
+.container{
+
+max-width:900px;
+margin:auto;
 padding:20px;
-
-}
-
-
-.card{
-
-background:#222;
-width:200px;
-padding:15px;
-border-radius:12px;
 text-align:center;
 
 }
 
 
-.card img{
 
-width:180px;
-height:260px;
+.capa{
+
+width:220px;
+height:320px;
 object-fit:cover;
 border-radius:10px;
 
 }
 
 
+
+.descricao{
+
+background:#222;
+padding:15px;
+border-radius:10px;
+margin:20px 0;
+
+}
+
+
+
 button{
 
 background:#ffcc00;
+color:#111;
 border:none;
-padding:10px;
+padding:10px 15px;
 border-radius:8px;
 cursor:pointer;
 font-weight:bold;
 
 }
+
+
+
+.capitulo{
+
+background:#222;
+padding:15px;
+margin:10px 0;
+border-radius:10px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+
+}
+
 
 
 .remover{
@@ -82,15 +108,48 @@ color:white;
 }
 
 
-a{
 
-text-decoration:none;
-color:white;
+.menu-fixo{
+
+position:fixed;
+bottom:0;
+left:0;
+width:100%;
+background:#222;
+display:flex;
+justify-content:space-around;
+padding:10px 0;
+z-index:999;
 
 }
 
 
+.menu-fixo a{
+
+color:white;
+text-decoration:none;
+text-align:center;
+font-size:14px;
+
+}
+
+
+
+.voltar{
+
+display:inline-block;
+background:white;
+color:#111;
+padding:10px;
+border-radius:8px;
+margin-top:20px;
+
+}
+
+
+
 </style>
+
 
 </head>
 
@@ -98,31 +157,57 @@ color:white;
 <body>
 
 
+
+
 <header>
 
-<h1>📚 Minha Biblioteca</h1>
+<h1>📖 Animix</h1>
 
 </header>
 
 
 
 
-<div class="catalogo" id="lista">
+
+<div class="container" id="conteudo">
+
 
 </div>
 
 
 
 
+
+<div class="menu-fixo">
+
+
 <a href="index.html">
-
-<button>
-
-🏠 Início
-
-</button>
-
+🏠<br>
+Início
 </a>
+
+
+<a href="favoritos.html">
+⭐<br>
+Favoritos
+</a>
+
+
+<a href="biblioteca.html">
+📚<br>
+Biblioteca
+</a>
+
+
+<a href="perfil.html">
+👤<br>
+Perfil
+</a>
+
+
+</div>
+
+
 
 
 
@@ -134,36 +219,32 @@ color:white;
 <script>
 
 
-let biblioteca =
 
-JSON.parse(
+let url=
 
-localStorage.getItem("biblioteca")
-
-) || [];
+new URLSearchParams(window.location.search);
 
 
 
+let id=
 
-let lista =
-
-document.getElementById("lista");
-
+Number(url.get("id"));
 
 
 
+let manga=
 
-biblioteca.forEach(function(nome){
+mangas[id];
 
 
 
-let manga =
 
-mangas.find(
 
-item=>item.nome===nome
+let conteudo=
 
-);
+document.getElementById("conteudo");
+
+
 
 
 
@@ -171,28 +252,67 @@ if(manga){
 
 
 
-let id = mangas.indexOf(manga);
+conteudo.innerHTML=`
+
+<img class="capa" src="${manga.capa}">
+
+
+<h2>${manga.nome}</h2>
+
+
+<div class="descricao">
+
+${manga.descricao}
+
+</div>
 
 
 
-lista.innerHTML += `
+<h2>Capítulos</h2>
 
 
-<div class="card">
-
-
-<img src="${manga.capa}">
-
-
-<h3>
-
-${manga.nome}
-
-</h3>
+<div id="capitulos"></div>
 
 
 
-<a href="manga.html?id=${id}">
+<a class="voltar" href="index.html">
+
+🏠 Início
+
+</a>
+
+
+`;
+
+
+
+
+let lista=
+
+document.getElementById("capitulos");
+
+
+
+
+manga.capitulos.forEach(function(cap){
+
+
+
+lista.innerHTML +=`
+
+
+<div class="capitulo">
+
+
+<span>
+
+Capítulo ${cap.numero}
+
+</span>
+
+
+
+<a href="leitor.html?id=${id}&cap=${cap.numero}">
 
 
 <button>
@@ -206,26 +326,11 @@ ${manga.nome}
 
 
 
-<button
-
-class="remover"
-
-onclick="remover('${manga.nome}')">
-
-❌ Remover
-
-</button>
-
-
-
 </div>
 
 
+
 `;
-
-
-
-}
 
 
 
@@ -233,45 +338,22 @@ onclick="remover('${manga.nome}')">
 
 
 
+}
+
+else{
 
 
+conteudo.innerHTML=
 
-
-
-function remover(nome){
-
-
-
-biblioteca =
-
-biblioteca.filter(
-
-item=>item!==nome
-
-);
-
-
-
-localStorage.setItem(
-
-"biblioteca",
-
-JSON.stringify(biblioteca)
-
-);
-
-
-
-location.reload();
-
+"<h2>Mangá não encontrado</h2>";
 
 
 }
 
 
 
-
 </script>
+
 
 
 
