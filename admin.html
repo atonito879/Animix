@@ -8,45 +8,32 @@
 
 <title>Animix - Admin</title>
 
-
 <style>
 
-body {
-
+body{
 margin:0;
 background:#111;
 color:white;
 font-family:Arial,sans-serif;
-
 }
 
-
-header {
-
+header{
 background:#222;
 padding:20px;
 text-align:center;
-
 }
 
-
-h1 {
-
+h1{
 color:#ffcc00;
-
 }
 
-
-.container {
-
+.container{
 max-width:600px;
 margin:auto;
 padding:20px;
-
 }
 
-
-input, textarea {
+input, textarea{
 
 width:100%;
 padding:12px;
@@ -57,11 +44,11 @@ border:none;
 }
 
 
-button {
+button{
 
 background:#ffcc00;
 border:none;
-padding:12px 20px;
+padding:10px 15px;
 border-radius:8px;
 cursor:pointer;
 font-weight:bold;
@@ -69,17 +56,25 @@ font-weight:bold;
 }
 
 
-.card {
+.remover{
+
+background:#c00000;
+color:white;
+
+}
+
+
+.card{
 
 background:#222;
 padding:15px;
-margin-top:20px;
+margin-top:15px;
 border-radius:10px;
 
 }
 
 
-img {
+.card img{
 
 width:120px;
 border-radius:8px;
@@ -89,13 +84,10 @@ border-radius:8px;
 
 </style>
 
-
 </head>
 
 
-
 <body>
-
 
 
 <header>
@@ -106,9 +98,7 @@ border-radius:8px;
 
 
 
-
 <div class="container">
-
 
 
 <h2>Novo Mangá</h2>
@@ -129,7 +119,7 @@ border-radius:8px;
 
 <button onclick="adicionar()">
 
-Adicionar Mangá
+Adicionar
 
 </button>
 
@@ -148,10 +138,7 @@ Adicionar Mangá
 
 
 
-
-
 <script>
-
 
 
 let mangas =
@@ -159,56 +146,37 @@ JSON.parse(localStorage.getItem("mangas")) || [];
 
 
 
-
-
 mostrar();
-
-
-
 
 
 
 function adicionar(){
 
 
-
-let nome =
-document.getElementById("nome").value;
+let manga = {
 
 
-let capa =
-document.getElementById("capa").value;
+nome:
+document.getElementById("nome").value,
 
 
-let descricao =
-document.getElementById("descricao").value;
+capa:
+document.getElementById("capa").value,
 
 
-let capitulos =
-document.getElementById("capitulos")
-.value
-.split(",");
+descricao:
+document.getElementById("descricao").value,
 
 
+capitulos:
+document.getElementById("capitulos").value.split(",")
 
 
-
-mangas.push({
-
-
-nome:nome,
-
-capa:capa,
-
-descricao:descricao,
-
-capitulos:capitulos
+};
 
 
 
-});
-
-
+mangas.push(manga);
 
 
 
@@ -219,9 +187,7 @@ JSON.stringify(mangas)
 
 
 
-
 mostrar();
-
 
 
 }
@@ -229,27 +195,22 @@ mostrar();
 
 
 
-
 function mostrar(){
-
 
 
 let lista =
 document.getElementById("lista");
 
 
-
 lista.innerHTML="";
 
 
 
-
-mangas.forEach(function(manga){
+mangas.forEach(function(manga,index){
 
 
 
 lista.innerHTML += `
-
 
 
 <div class="card">
@@ -265,8 +226,17 @@ lista.innerHTML += `
 
 
 
-</div>
+<button 
+class="remover"
+onclick="remover(${index})">
 
+❌ Remover
+
+</button>
+
+
+
+</div>
 
 
 `;
@@ -281,9 +251,35 @@ lista.innerHTML += `
 
 
 
+
+function remover(index){
+
+
+if(confirm("Deseja remover este mangá?")){
+
+
+mangas.splice(index,1);
+
+
+
+localStorage.setItem(
+"mangas",
+JSON.stringify(mangas)
+);
+
+
+
+mostrar();
+
+
+}
+
+
+
+}
+
+
 </script>
-
-
 
 
 </body>
