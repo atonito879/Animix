@@ -8,7 +8,6 @@
 
 <title>Animix - Mangás</title>
 
-
 <style>
 
 body {
@@ -43,10 +42,8 @@ h1 {
     padding:12px;
     border-radius:8px;
     border:none;
-    font-size:16px;
 
 }
-
 
 
 .menu {
@@ -66,7 +63,6 @@ h1 {
 }
 
 
-
 .catalogo {
 
     display:flex;
@@ -76,7 +72,6 @@ h1 {
     padding:20px;
 
 }
-
 
 
 .card {
@@ -90,7 +85,6 @@ h1 {
 }
 
 
-
 .card img {
 
     width:180px;
@@ -101,13 +95,11 @@ h1 {
 }
 
 
-
 .card h3 {
 
     color:#ffcc00;
 
 }
-
 
 
 button {
@@ -116,7 +108,6 @@ button {
     color:#111;
     border:none;
     padding:10px;
-    margin:5px;
     border-radius:8px;
     cursor:pointer;
     font-weight:bold;
@@ -124,19 +115,10 @@ button {
 }
 
 
-
 .favorito {
 
     background:#444;
     color:white;
-
-}
-
-
-
-a {
-
-    text-decoration:none;
 
 }
 
@@ -150,20 +132,19 @@ a {
 <body>
 
 
+
 <header>
 
 
 <h1>📚 Animix</h1>
 
-
 <p>Leia seus mangás favoritos</p>
-
 
 
 <input 
 id="pesquisa"
 class="pesquisa"
-placeholder="🔎 Pesquisar mangá..."
+placeholder="🔎 Pesquisar..."
 onkeyup="buscar()"
 >
 
@@ -172,9 +153,7 @@ onkeyup="buscar()"
 
 
 
-
 <div class="menu">
-
 
 <a href="index.html">
 🏠 Início
@@ -186,7 +165,6 @@ onkeyup="buscar()"
 </a>
 
 
-
 </div>
 
 
@@ -194,164 +172,79 @@ onkeyup="buscar()"
 
 <div class="catalogo" id="catalogo">
 
-
-
-
-
-
-<div class="card">
-
-
-<img src="https://via.placeholder.com/180x260">
-
-
-<h3>
-Mangá Exemplo
-</h3>
-
-
-<p>
-Aventura e ação
-</p>
-
-
-
-<a href="manga.html">
-
-<button>
-📖 Ver mangá
-</button>
-
-</a>
-
-
-
-<button 
-class="favorito"
-onclick="favoritar(
-'Mangá Exemplo',
-'https://via.placeholder.com/180x260',
-'manga.html',
-this
-)">
-⭐ Favoritar
-</button>
-
-
-
 </div>
 
 
 
 
 
-
-
-
-<div class="card">
-
-
-<img src="https://via.placeholder.com/180x260">
-
-
-<h3>
-Nova Aventura
-</h3>
-
-
-<p>
-Fantasia e mistério
-</p>
-
-
-
-<a href="aventura.html">
-
-<button>
-📖 Ver mangá
-</button>
-
-</a>
-
-
-
-<button 
-class="favorito"
-onclick="favoritar(
-'Nova Aventura',
-'https://via.placeholder.com/180x260',
-'aventura.html',
-this
-)">
-⭐ Favoritar
-</button>
-
-
-
-</div>
-
-
-
-
-
-
-
-
-<div class="card">
-
-
-<img src="https://via.placeholder.com/180x260">
-
-
-<h3>
-Samurai Lendário
-</h3>
-
-
-<p>
-Batalhas épicas
-</p>
-
-
-
-<a href="samurai.html">
-
-<button>
-📖 Ver mangá
-</button>
-
-</a>
-
-
-
-<button 
-class="favorito"
-onclick="favoritar(
-'Samurai Lendário',
-'https://via.placeholder.com/180x260',
-'samurai.html',
-this
-)">
-⭐ Favoritar
-</button>
-
-
-
-</div>
-
-
-
-
-
-</div>
-
-
-
-
-
+<script src="dados.js"></script>
 
 
 <script>
+
+
+
+let catalogo =
+document.getElementById("catalogo");
+
+
+
+mangas.forEach(function(manga,index){
+
+
+
+catalogo.innerHTML += `
+
+
+<div class="card">
+
+
+<img src="${manga.capa}">
+
+
+<h3>
+${manga.nome}
+</h3>
+
+
+<p>
+${manga.descricao}
+</p>
+
+
+
+<a href="manga.html?id=${index}">
+
+<button>
+📖 Ver mangá
+</button>
+
+</a>
+
+
+
+<button 
+class="favorito"
+onclick="favoritar(${index})">
+
+⭐ Favoritar
+
+</button>
+
+
+</div>
+
+
+`;
+
+
+
+});
+
+
+
+
 
 
 
@@ -383,16 +276,12 @@ cards[i]
 
 
 
-if(nome.includes(texto)){
-
-
-cards[i].style.display="block";
-
-
-}else{
-
-
-cards[i].style.display="none";
+cards[i].style.display =
+nome.includes(texto)
+?
+"block"
+:
+"none";
 
 
 }
@@ -401,16 +290,12 @@ cards[i].style.display="none";
 }
 
 
-}
 
 
 
 
 
-
-
-function favoritar(nome,capa,link,botao){
-
+function favoritar(index){
 
 
 let favoritos =
@@ -418,45 +303,28 @@ JSON.parse(localStorage.getItem("favoritos")) || [];
 
 
 
+let manga =
+mangas[index];
+
+
+
 let existe =
 favoritos.find(
-item=>item.nome===nome
+item=>item.nome===manga.nome
 );
 
 
 
-if(existe){
+if(!existe){
 
 
-favoritos =
-favoritos.filter(
-item=>item.nome!==nome
-);
+favoritos.push(manga);
 
 
-botao.innerHTML="⭐ Favoritar";
+alert("⭐ Adicionado aos favoritos");
 
 
 }
-
-else{
-
-
-favoritos.push({
-
-nome:nome,
-capa:capa,
-link:link
-
-});
-
-
-botao.innerHTML="❌ Remover";
-
-
-
-}
-
 
 
 localStorage.setItem(
@@ -469,10 +337,7 @@ JSON.stringify(favoritos)
 }
 
 
-
-
 </script>
-
 
 
 
