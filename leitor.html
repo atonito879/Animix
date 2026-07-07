@@ -8,39 +8,51 @@
 
 <title>Animix - Leitor</title>
 
+
 <style>
 
 body {
+
     margin:0;
     background:#111;
     color:white;
     font-family:Arial,sans-serif;
+
 }
 
 
 header {
+
     background:#222;
-    padding:15px;
+    padding:20px;
     text-align:center;
     position:sticky;
     top:0;
+    z-index:10;
+
 }
 
 
 h1 {
+
     color:#ffcc00;
+
 }
 
 
 .controles {
+
     text-align:center;
     padding:15px;
+
 }
+
 
 
 button {
 
     background:#ffcc00;
+    color:#111;
     border:none;
     padding:10px 15px;
     border-radius:8px;
@@ -48,6 +60,7 @@ button {
     font-weight:bold;
 
 }
+
 
 
 a {
@@ -61,10 +74,11 @@ a {
 
     background:white;
     color:#111;
-    padding:10px;
+    padding:10px 15px;
     border-radius:8px;
 
 }
+
 
 
 .leitor {
@@ -75,12 +89,14 @@ a {
 }
 
 
+
 .pagina {
 
     margin-bottom:15px;
     text-align:center;
 
 }
+
 
 
 .pagina img {
@@ -90,12 +106,15 @@ a {
 
 }
 
+
 </style>
+
 
 </head>
 
 
 <body>
+
 
 
 <header>
@@ -108,41 +127,53 @@ a {
 
 
 
+
 <div class="controles">
 
 
-<button onclick="anterior()">
-⬅ Anterior
+<button onclick="capAnterior()">
+
+⬅ Capítulo anterior
+
 </button>
 
 
 
-<button onclick="proximo()">
-Próximo ➡
+<button onclick="proximoCap()">
+
+Próximo capítulo ➡
+
 </button>
+
 
 
 <br><br>
 
 
 <a class="voltar" href="index.html">
+
 🏠 Início
+
 </a>
 
 
+
 </div>
+
 
 
 
 <div class="leitor" id="leitor">
 
+
 </div>
 
 
 
 
-<script src="dados.js"></script>
 
+
+<script src="dados.js"></script>
 
 
 <script>
@@ -154,12 +185,12 @@ new URLSearchParams(window.location.search);
 
 
 let id =
-Number(url.get("id")) || 0;
+Number(url.get("id"));
 
 
 
 let cap =
-Number(url.get("cap")) || 1;
+Number(url.get("cap"));
 
 
 
@@ -168,10 +199,20 @@ mangas[id];
 
 
 
+let capitulo =
+manga.capitulos.find(
+item=>item.numero===cap
+);
+
+
+
 
 document.getElementById("titulo").innerHTML =
 
-manga.nome + " - Capítulo " + cap;
+manga.nome +
+" - Capítulo " +
+cap;
+
 
 
 
@@ -181,22 +222,9 @@ document.getElementById("leitor");
 
 
 
-let paginas = [
 
 
-"Página 1",
-
-"Página 2",
-
-"Página 3"
-
-
-];
-
-
-
-
-paginas.forEach(function(pagina){
+capitulo.paginas.forEach(function(pagina,index){
 
 
 
@@ -206,7 +234,12 @@ leitor.innerHTML += `
 <div class="pagina">
 
 
-<img src="https://via.placeholder.com/800x1200?text=${manga.nome}+${pagina}">
+<p>
+Página ${index+1}
+</p>
+
+
+<img src="${pagina}">
 
 
 </div>
@@ -223,15 +256,35 @@ leitor.innerHTML += `
 
 
 
+function proximoCap(){
 
-function proximo(){
 
 
-cap++;
+let proximo =
+manga.capitulos.find(
+item=>item.numero===cap+1
+);
+
+
+
+if(proximo){
 
 
 window.location.href =
-"leitor.html?id="+id+"&cap="+cap;
+"leitor.html?id="+id+"&cap="+(cap+1);
+
+
+}
+
+
+
+else{
+
+
+alert("Último capítulo");
+
+
+}
 
 
 }
@@ -240,20 +293,27 @@ window.location.href =
 
 
 
-function anterior(){
+
+function capAnterior(){
 
 
-if(cap>1){
+
+let anterior =
+manga.capitulos.find(
+item=>item.numero===cap-1
+);
 
 
-cap--;
+
+if(anterior){
 
 
 window.location.href =
-"leitor.html?id="+id+"&cap="+cap;
+"leitor.html?id="+id+"&cap="+(cap-1);
 
 
 }
+
 
 
 }
@@ -261,6 +321,8 @@ window.location.href =
 
 
 </script>
+
+
 
 
 </body>
