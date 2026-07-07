@@ -8,7 +8,13 @@
 
 <title>Animix - Leitor</title>
 
+
 <style>
+
+html{
+scroll-behavior:smooth;
+}
+
 
 body{
 
@@ -25,6 +31,9 @@ header{
 background:#222;
 padding:20px;
 text-align:center;
+position:sticky;
+top:0;
+z-index:10;
 
 }
 
@@ -32,6 +41,25 @@ text-align:center;
 h1{
 
 color:#ffcc00;
+
+}
+
+
+.progresso{
+
+background:#333;
+padding:10px;
+text-align:center;
+
+}
+
+
+
+.barra{
+
+height:10px;
+background:#ffcc00;
+width:0%;
 
 }
 
@@ -68,24 +96,6 @@ text-decoration:none;
 
 
 
-.leitor{
-
-max-width:900px;
-margin:auto;
-
-}
-
-
-
-.pagina img{
-
-width:100%;
-display:block;
-margin-bottom:15px;
-
-}
-
-
 .voltar{
 
 background:white;
@@ -96,14 +106,54 @@ border-radius:8px;
 }
 
 
+
+.leitor{
+
+max-width:900px;
+margin:auto;
+
+}
+
+
+
+.pagina{
+
+margin-bottom:20px;
+text-align:center;
+
+}
+
+
+
+.pagina img{
+
+width:100%;
+display:block;
+
+}
+
+
+
+
+.topo{
+
+position:fixed;
+bottom:20px;
+right:20px;
+display:none;
+
+}
+
+
+
 </style>
 
 
 </head>
 
 
-<body>
 
+<body>
 
 
 
@@ -121,24 +171,22 @@ border-radius:8px;
 
 
 
+
+<div class="progresso">
+
+
+<div id="barra" class="barra">
+
+</div>
+
+
+</div>
+
+
+
+
+
 <div class="controles">
-
-
-<button onclick="anterior()">
-
-⬅ Anterior
-
-</button>
-
-
-<button onclick="proximo()">
-
-Próximo ➡
-
-</button>
-
-
-<br><br>
 
 
 <a class="voltar" href="index.html">
@@ -153,9 +201,20 @@ Próximo ➡
 
 
 
+
 <div class="leitor" id="leitor">
 
 </div>
+
+
+
+
+<button class="topo" id="topo" onclick="topoPagina()">
+
+⬆
+
+</button>
+
 
 
 
@@ -167,73 +226,31 @@ Próximo ➡
 
 
 
-
 <script>
 
 
 
 let url =
+
 new URLSearchParams(window.location.search);
 
 
 
 let id =
+
 Number(url.get("id"));
 
 
 
 let cap =
+
 Number(url.get("cap"));
 
 
 
 let manga =
+
 mangas[id];
-
-
-
-
-
-// SALVA HISTÓRICO
-
-
-let historico = {
-
-
-manga:manga.nome,
-
-
-id:id,
-
-
-capitulo:cap,
-
-
-data:new Date().toLocaleString()
-
-
-};
-
-
-
-localStorage.setItem(
-
-"ultimoLido",
-
-JSON.stringify(historico)
-
-);
-
-
-
-
-
-
-document.getElementById("titulo").innerHTML =
-
-manga.nome+
-" - Capítulo "+
-cap;
 
 
 
@@ -246,6 +263,44 @@ manga.capitulos.find(
 item=>item.numero===cap
 
 );
+
+
+
+
+
+
+document.getElementById("titulo").innerHTML =
+
+manga.nome+
+
+" - Capítulo "+
+
+cap;
+
+
+
+
+
+
+// HISTÓRICO
+
+
+localStorage.setItem(
+
+"ultimoLido",
+
+JSON.stringify({
+
+manga:manga.nome,
+
+id:id,
+
+capitulo:cap
+
+})
+
+);
+
 
 
 
@@ -267,7 +322,7 @@ capitulo.paginas.forEach(function(pagina,index){
 leitor.innerHTML += `
 
 
-<div class="pagina">
+<div class="pagina" id="pagina${index}">
 
 
 <p>
@@ -278,10 +333,11 @@ Página ${index+1}
 
 
 
-<img src="${pagina}">
+<img src="${pagina}" onclick="salvarPagina(${index})">
 
 
 </div>
+
 
 
 `;
@@ -296,28 +352,60 @@ Página ${index+1}
 
 
 
-function proximo(){
+function salvarPagina(pagina){
 
 
 
-let existe =
+localStorage.setItem(
 
-manga.capitulos.find(
+"ultimaPagina",
 
-item=>item.numero===cap+1
+pagina
 
 );
 
 
 
-if(existe){
+}
 
 
 
-location.href=
+window.onscroll=function(){
 
-"leitor.html?id="+id+"&cap="+(cap+1);
 
+
+let altura =
+
+document.documentElement.scrollHeight -
+
+document.documentElement.clientHeight;
+
+
+
+let atual =
+
+window.scrollY;
+
+
+
+let porcentagem =
+
+(atual/altura)*100;
+
+
+
+document.getElementById("barra").style.width =
+
+porcentagem+"%";
+
+
+
+
+
+if(atual>300){
+
+
+document.getElementById("topo").style.display="block";
 
 
 }
@@ -325,36 +413,25 @@ location.href=
 else{
 
 
-alert("Último capítulo");
+document.getElementById("topo").style.display="none";
 
 
 }
 
 
-}
-
-
-
-
-
-
-
-function anterior(){
-
-
-
-if(cap>1){
-
-
-
-location.href=
-
-"leitor.html?id="+id+"&cap="+(cap-1);
-
-
 
 }
 
+
+
+
+
+
+
+function topoPagina(){
+
+
+window.scrollTo(0,0);
 
 
 }
