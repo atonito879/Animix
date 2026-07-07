@@ -8,112 +8,97 @@
 
 <title>Animix - Mangá</title>
 
-
 <style>
 
 body {
-
-margin:0;
-background:#111;
-color:white;
-font-family:Arial,sans-serif;
-
+    margin:0;
+    background:#111;
+    color:white;
+    font-family:Arial,sans-serif;
 }
 
 
 header {
-
-background:#222;
-padding:20px;
-text-align:center;
-
+    background:#222;
+    padding:20px;
+    text-align:center;
 }
 
 
 h1 {
-
-color:#ffcc00;
-
+    color:#ffcc00;
 }
 
 
 .container {
-
-max-width:900px;
-margin:auto;
-padding:20px;
-text-align:center;
-
+    max-width:900px;
+    margin:auto;
+    padding:20px;
+    text-align:center;
 }
 
 
 .capa {
 
-width:220px;
-height:320px;
-object-fit:cover;
-border-radius:10px;
+    width:220px;
+    height:320px;
+    object-fit:cover;
+    border-radius:10px;
 
 }
 
 
 .descricao {
 
-background:#222;
-padding:15px;
-border-radius:10px;
-margin:20px 0;
+    background:#222;
+    padding:15px;
+    border-radius:10px;
+    margin:20px 0;
 
 }
-
 
 
 .capitulo {
 
-background:#222;
-padding:15px;
-margin:10px 0;
-border-radius:10px;
-display:flex;
-justify-content:space-between;
-align-items:center;
+    background:#222;
+    padding:15px;
+    margin:10px 0;
+    border-radius:10px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
 
 }
-
 
 
 button {
 
-background:#ffcc00;
-color:#111;
-border:none;
-padding:10px 15px;
-border-radius:8px;
-cursor:pointer;
-font-weight:bold;
-
-}
-
-
-
-a {
-
-text-decoration:none;
+    background:#ffcc00;
+    color:#111;
+    border:none;
+    padding:10px 15px;
+    border-radius:8px;
+    cursor:pointer;
+    font-weight:bold;
 
 }
 
 
 .voltar {
 
-display:inline-block;
-margin-top:20px;
-background:white;
-color:#111;
-padding:10px 15px;
-border-radius:8px;
+    display:inline-block;
+    margin-top:20px;
+    background:white;
+    color:#111;
+    padding:10px 15px;
+    border-radius:8px;
 
 }
 
+
+a {
+    text-decoration:none;
+}
 
 </style>
 
@@ -121,9 +106,7 @@ border-radius:8px;
 </head>
 
 
-
 <body>
-
 
 
 <header>
@@ -137,10 +120,7 @@ border-radius:8px;
 
 <div class="container" id="conteudo">
 
-
 </div>
-
-
 
 
 
@@ -149,7 +129,6 @@ border-radius:8px;
 
 
 <script>
-
 
 
 let url =
@@ -188,7 +167,9 @@ conteudo.innerHTML = `
 
 <div class="descricao">
 
-<p>${manga.descricao}</p>
+<p>
+${manga.descricao}
+</p>
 
 </div>
 
@@ -197,8 +178,7 @@ conteudo.innerHTML = `
 <h2>Capítulos</h2>
 
 
-
-<div id="capitulos"></div>
+<div id="lista"></div>
 
 
 
@@ -209,16 +189,12 @@ conteudo.innerHTML = `
 </a>
 
 
-
 `;
 
 
 
-
-
 let lista =
-document.getElementById("capitulos");
-
+document.getElementById("lista");
 
 
 
@@ -233,19 +209,16 @@ lista.innerHTML += `
 
 
 <span>
-
 Capítulo ${cap}
-
 </span>
 
 
-<a href="leitor.html?cap=${cap}">
+
+<a href="leitor.html?id=${id}&cap=${cap}">
 
 
 <button>
-
 Ler
-
 </button>
 
 
@@ -273,7 +246,6 @@ conteudo.innerHTML =
 
 
 }
-
 
 
 </script>
