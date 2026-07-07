@@ -6,19 +6,15 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Animix - Leitor</title>
+<title>Animix - Mangá</title>
 
 
 <style>
 
-html{
-scroll-behavior:smooth;
-}
-
-
 body{
 
 margin:0;
+padding-bottom:80px;
 background:#111;
 color:white;
 font-family:Arial,sans-serif;
@@ -31,9 +27,6 @@ header{
 background:#222;
 padding:20px;
 text-align:center;
-position:sticky;
-top:0;
-z-index:10;
 
 }
 
@@ -45,30 +38,35 @@ color:#ffcc00;
 }
 
 
-.progresso{
 
-background:#333;
-padding:10px;
+.container{
+
+max-width:900px;
+margin:auto;
+padding:20px;
 text-align:center;
 
 }
 
 
 
-.barra{
+.capa{
 
-height:10px;
-background:#ffcc00;
-width:0%;
+width:220px;
+height:320px;
+object-fit:cover;
+border-radius:10px;
 
 }
 
 
 
-.controles{
+.descricao{
 
-text-align:center;
+background:#222;
 padding:15px;
+border-radius:10px;
+margin:20px 0;
 
 }
 
@@ -88,9 +86,50 @@ font-weight:bold;
 
 
 
-a{
+.capitulo{
 
+background:#222;
+padding:15px;
+margin:10px 0;
+border-radius:10px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+
+}
+
+
+
+.remover{
+
+background:#c00000;
+color:white;
+
+}
+
+
+
+.menu-fixo{
+
+position:fixed;
+bottom:0;
+left:0;
+width:100%;
+background:#222;
+display:flex;
+justify-content:space-around;
+padding:10px 0;
+z-index:999;
+
+}
+
+
+.menu-fixo a{
+
+color:white;
 text-decoration:none;
+text-align:center;
+font-size:14px;
 
 }
 
@@ -98,49 +137,12 @@ text-decoration:none;
 
 .voltar{
 
+display:inline-block;
 background:white;
 color:#111;
 padding:10px;
 border-radius:8px;
-
-}
-
-
-
-.leitor{
-
-max-width:900px;
-margin:auto;
-
-}
-
-
-
-.pagina{
-
-margin-bottom:20px;
-text-align:center;
-
-}
-
-
-
-.pagina img{
-
-width:100%;
-display:block;
-
-}
-
-
-
-
-.topo{
-
-position:fixed;
-bottom:20px;
-right:20px;
-display:none;
+margin-top:20px;
 
 }
 
@@ -152,19 +154,14 @@ display:none;
 </head>
 
 
-
 <body>
+
 
 
 
 <header>
 
-
 <h1>📖 Animix</h1>
-
-
-<h2 id="titulo"></h2>
-
 
 </header>
 
@@ -172,12 +169,7 @@ display:none;
 
 
 
-<div class="progresso">
-
-
-<div id="barra" class="barra">
-
-</div>
+<div class="container" id="conteudo">
 
 
 </div>
@@ -186,35 +178,34 @@ display:none;
 
 
 
-<div class="controles">
+<div class="menu-fixo">
 
 
-<a class="voltar" href="index.html">
+<a href="index.html">
+🏠<br>
+Início
+</a>
 
-🏠 Início
 
+<a href="favoritos.html">
+⭐<br>
+Favoritos
+</a>
+
+
+<a href="biblioteca.html">
+📚<br>
+Biblioteca
+</a>
+
+
+<a href="perfil.html">
+👤<br>
+Perfil
 </a>
 
 
 </div>
-
-
-
-
-
-<div class="leitor" id="leitor">
-
-</div>
-
-
-
-
-<button class="topo" id="topo" onclick="topoPagina()">
-
-⬆
-
-</button>
-
 
 
 
@@ -225,30 +216,23 @@ display:none;
 <script src="dados.js"></script>
 
 
-
 <script>
 
 
 
-let url =
+let url=
 
 new URLSearchParams(window.location.search);
 
 
 
-let id =
+let id=
 
 Number(url.get("id"));
 
 
 
-let cap =
-
-Number(url.get("cap"));
-
-
-
-let manga =
+let manga=
 
 mangas[id];
 
@@ -256,84 +240,90 @@ mangas[id];
 
 
 
-let capitulo =
+let conteudo=
 
-manga.capitulos.find(
-
-item=>item.numero===cap
-
-);
+document.getElementById("conteudo");
 
 
 
 
 
-
-document.getElementById("titulo").innerHTML =
-
-manga.nome+
-
-" - Capítulo "+
-
-cap;
+if(manga){
 
 
 
+conteudo.innerHTML=`
+
+<img class="capa" src="${manga.capa}">
+
+
+<h2>${manga.nome}</h2>
+
+
+<div class="descricao">
+
+${manga.descricao}
+
+</div>
 
 
 
-// HISTÓRICO
+<h2>Capítulos</h2>
 
 
-localStorage.setItem(
-
-"ultimoLido",
-
-JSON.stringify({
-
-manga:manga.nome,
-
-id:id,
-
-capitulo:cap
-
-})
-
-);
+<div id="capitulos"></div>
 
 
 
+<a class="voltar" href="index.html">
+
+🏠 Início
+
+</a>
 
 
-
-
-let leitor =
-
-document.getElementById("leitor");
+`;
 
 
 
 
+let lista=
 
-capitulo.paginas.forEach(function(pagina,index){
-
-
-
-leitor.innerHTML += `
-
-
-<div class="pagina" id="pagina${index}">
-
-
-<p>
-
-Página ${index+1}
-
-</p>
+document.getElementById("capitulos");
 
 
 
-<img src="${pagina}" onclick="salvarPagina(${index})">
+
+manga.capitulos.forEach(function(cap){
+
+
+
+lista.innerHTML +=`
+
+
+<div class="capitulo">
+
+
+<span>
+
+Capítulo ${cap.numero}
+
+</span>
+
+
+
+<a href="leitor.html?id=${id}&cap=${cap.numero}">
+
+
+<button>
+
+📖 Ler
+
+</button>
+
+
+</a>
+
 
 
 </div>
@@ -348,90 +338,14 @@ Página ${index+1}
 
 
 
-
-
-
-
-function salvarPagina(pagina){
-
-
-
-localStorage.setItem(
-
-"ultimaPagina",
-
-pagina
-
-);
-
-
-
-}
-
-
-
-window.onscroll=function(){
-
-
-
-let altura =
-
-document.documentElement.scrollHeight -
-
-document.documentElement.clientHeight;
-
-
-
-let atual =
-
-window.scrollY;
-
-
-
-let porcentagem =
-
-(atual/altura)*100;
-
-
-
-document.getElementById("barra").style.width =
-
-porcentagem+"%";
-
-
-
-
-
-if(atual>300){
-
-
-document.getElementById("topo").style.display="block";
-
-
 }
 
 else{
 
 
-document.getElementById("topo").style.display="none";
+conteudo.innerHTML=
 
-
-}
-
-
-
-}
-
-
-
-
-
-
-
-function topoPagina(){
-
-
-window.scrollTo(0,0);
+"<h2>Mangá não encontrado</h2>";
 
 
 }
@@ -439,6 +353,7 @@ window.scrollTo(0,0);
 
 
 </script>
+
 
 
 
