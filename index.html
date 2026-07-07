@@ -6,78 +6,105 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Animix</title>
+<title>Animix - Mangá</title>
+
 
 <style>
 
 body{
+
 margin:0;
 padding-bottom:80px;
 background:#111;
 color:white;
 font-family:Arial,sans-serif;
+
 }
+
 
 header{
+
 background:#222;
 padding:20px;
 text-align:center;
+
 }
+
 
 h1{
+
 color:#ffcc00;
-}
 
-.pesquisa{
-width:80%;
-max-width:500px;
-padding:12px;
-border-radius:8px;
-border:none;
 }
 
 
-.usuario{
-background:#333;
-padding:10px;
-border-radius:8px;
-margin:10px;
-}
 
+.container{
 
-.catalogo{
-display:flex;
-flex-wrap:wrap;
-justify-content:center;
-gap:20px;
+max-width:900px;
+margin:auto;
 padding:20px;
-}
-
-
-.card{
-background:#222;
-width:200px;
-padding:15px;
-border-radius:12px;
 text-align:center;
+
 }
 
 
-.card img{
-width:180px;
-height:260px;
+
+.capa{
+
+width:220px;
+height:320px;
 object-fit:cover;
 border-radius:10px;
+
 }
+
+
+
+.descricao{
+
+background:#222;
+padding:15px;
+border-radius:10px;
+margin:20px 0;
+
+}
+
 
 
 button{
+
 background:#ffcc00;
+color:#111;
 border:none;
-padding:10px;
+padding:10px 15px;
 border-radius:8px;
 cursor:pointer;
 font-weight:bold;
+
+}
+
+
+
+.capitulo{
+
+background:#222;
+padding:15px;
+margin:10px 0;
+border-radius:10px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+
+}
+
+
+
+.remover{
+
+background:#c00000;
+color:white;
+
 }
 
 
@@ -107,22 +134,18 @@ font-size:14px;
 }
 
 
-.secao{
 
-padding:20px;
+.voltar{
 
-}
-
-
-
-.continuar{
-
-background:#222;
-padding:15px;
-border-radius:10px;
-text-align:center;
+display:inline-block;
+background:white;
+color:#111;
+padding:10px;
+border-radius:8px;
+margin-top:20px;
 
 }
+
 
 
 </style>
@@ -135,22 +158,10 @@ text-align:center;
 
 
 
+
 <header>
 
-
-<h1>📚 Animix</h1>
-
-
-<div id="usuario"></div>
-
-
-<input 
-class="pesquisa"
-id="pesquisa"
-placeholder="🔎 Pesquisar..."
-onkeyup="buscar()"
->
-
+<h1>📖 Animix</h1>
 
 </header>
 
@@ -158,15 +169,10 @@ onkeyup="buscar()"
 
 
 
-<div id="continuar"></div>
+<div class="container" id="conteudo">
 
-
-
-<div class="catalogo" id="catalogo">
 
 </div>
-
-
 
 
 
@@ -210,63 +216,103 @@ Perfil
 <script src="dados.js"></script>
 
 
-
 <script>
 
 
 
-let lista=mangas;
+let url=
 
-
-let extras=
-
-JSON.parse(localStorage.getItem("mangas")) || [];
+new URLSearchParams(window.location.search);
 
 
 
-lista=lista.concat(extras);
+let id=
+
+Number(url.get("id"));
 
 
 
+let manga=
 
-
-let catalogo=
-
-document.getElementById("catalogo");
+mangas[id];
 
 
 
 
 
-lista.forEach(function(manga,index){
+let conteudo=
+
+document.getElementById("conteudo");
 
 
 
-catalogo.innerHTML += `
 
 
-<div class="card">
+if(manga){
 
 
-<img src="${manga.capa}">
+
+conteudo.innerHTML=`
+
+<img class="capa" src="${manga.capa}">
 
 
-<h3>
-
-${manga.nome}
-
-</h3>
+<h2>${manga.nome}</h2>
 
 
-<p>
+<div class="descricao">
 
 ${manga.descricao}
 
-</p>
+</div>
 
 
 
-<a href="manga.html?id=${index}">
+<h2>Capítulos</h2>
+
+
+<div id="capitulos"></div>
+
+
+
+<a class="voltar" href="index.html">
+
+🏠 Início
+
+</a>
+
+
+`;
+
+
+
+
+let lista=
+
+document.getElementById("capitulos");
+
+
+
+
+manga.capitulos.forEach(function(cap){
+
+
+
+lista.innerHTML +=`
+
+
+<div class="capitulo">
+
+
+<span>
+
+Capítulo ${cap.numero}
+
+</span>
+
+
+
+<a href="leitor.html?id=${id}&cap=${cap.numero}">
 
 
 <button>
@@ -279,7 +325,9 @@ ${manga.descricao}
 </a>
 
 
+
 </div>
+
 
 
 `;
@@ -290,140 +338,14 @@ ${manga.descricao}
 
 
 
-
-
-
-
-let ultimo=
-
-JSON.parse(localStorage.getItem("ultimoLido"));
-
-
-
-if(ultimo){
-
-
-document.getElementById("continuar").innerHTML=`
-
-<div class="secao">
-
-<h2>📌 Continuar lendo</h2>
-
-
-<div class="continuar">
-
-
-<h3>${ultimo.manga}</h3>
-
-
-<p>
-
-Capítulo ${ultimo.capitulo}
-
-</p>
-
-
-<a href="leitor.html?id=${ultimo.id}&cap=${ultimo.capitulo}">
-
-
-<button>
-
-▶ Continuar
-
-</button>
-
-
-</a>
-
-
-</div>
-
-
-</div>
-
-`;
-
-
-
-}
-
-
-
-
-
-
-
-
-function buscar(){
-
-
-let texto=
-
-document.getElementById("pesquisa").value.toLowerCase();
-
-
-
-let cards=
-
-document.getElementsByClassName("card");
-
-
-
-for(let i=0;i<cards.length;i++){
-
-
-let nome=
-
-cards[i].querySelector("h3").innerHTML.toLowerCase();
-
-
-
-cards[i].style.display=
-
-nome.includes(texto)
-
-?
-
-"block"
-
-:
-
-"none";
-
-
-}
-
-
-
-}
-
-
-
-
-
-
-let nome=
-
-localStorage.getItem("nomeUsuario");
-
-
-
-if(nome){
-
-
-document.getElementById("usuario").innerHTML=
-
-"👤 Olá "+nome;
-
-
 }
 
 else{
 
 
-document.getElementById("usuario").innerHTML=
+conteudo.innerHTML=
 
-"Faça login para salvar seu progresso";
+"<h2>Mangá não encontrado</h2>";
 
 
 }
