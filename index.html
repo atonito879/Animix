@@ -20,18 +20,14 @@ font-family:Arial,sans-serif;
 
 
 header{
-
 background:#222;
 padding:20px;
 text-align:center;
-
 }
 
 
 h1{
-
 color:#ffcc00;
-
 }
 
 
@@ -44,7 +40,6 @@ border-radius:8px;
 border:none;
 
 }
-
 
 
 .menu{
@@ -73,6 +68,37 @@ padding:10px;
 border-radius:8px;
 cursor:pointer;
 font-weight:bold;
+
+}
+
+
+.usuario{
+
+background:#333;
+padding:10px;
+margin:10px;
+border-radius:8px;
+
+}
+
+
+
+.secao{
+
+padding:20px;
+
+}
+
+
+
+.continuar{
+
+background:#222;
+border-radius:12px;
+padding:15px;
+text-align:center;
+max-width:400px;
+margin:auto;
 
 }
 
@@ -119,19 +145,11 @@ color:#ffcc00;
 }
 
 
-.usuario{
-
-background:#333;
-padding:10px;
-margin:10px;
-border-radius:8px;
-
-}
-
-
 </style>
 
+
 </head>
+
 
 
 <body>
@@ -144,13 +162,14 @@ border-radius:8px;
 <h1>📚 Animix</h1>
 
 
+
 <div id="usuario" class="usuario">
 
 </div>
 
 
 
-<input 
+<input
 id="pesquisa"
 class="pesquisa"
 placeholder="🔎 Pesquisar mangá..."
@@ -160,7 +179,6 @@ onkeyup="buscar()"
 
 
 </header>
-
 
 
 
@@ -178,11 +196,9 @@ onkeyup="buscar()"
 </a>
 
 
-
 <a href="login.html">
 🔐 Login
 </a>
-
 
 
 <a href="admin.html">
@@ -190,8 +206,14 @@ onkeyup="buscar()"
 </a>
 
 
-
 </div>
+
+
+
+
+
+
+<div id="continuarArea"></div>
 
 
 
@@ -212,8 +234,100 @@ onkeyup="buscar()"
 
 
 
-
 <script>
+
+
+
+
+
+// HISTÓRICO DE LEITURA
+
+
+
+let ultimo =
+
+JSON.parse(
+
+localStorage.getItem("ultimoLido")
+
+);
+
+
+
+
+
+if(ultimo){
+
+
+
+document.getElementById("continuarArea").innerHTML = `
+
+
+
+<div class="secao">
+
+
+<h2>
+
+📌 Continuar lendo
+
+</h2>
+
+
+
+<div class="continuar">
+
+
+<h3>
+
+${ultimo.manga}
+
+</h3>
+
+
+
+<p>
+
+Capítulo ${ultimo.capitulo}
+
+</p>
+
+
+
+<a href="leitor.html?id=${ultimo.id}&cap=${ultimo.capitulo}">
+
+
+<button>
+
+▶ Continuar
+
+</button>
+
+
+</a>
+
+
+
+</div>
+
+
+</div>
+
+
+
+`;
+
+
+
+}
+
+
+
+
+
+
+
+// CATÁLOGO
 
 
 
@@ -222,18 +336,24 @@ let lista = mangas;
 
 
 let cadastrados =
-JSON.parse(localStorage.getItem("mangas")) || [];
+
+JSON.parse(
+
+localStorage.getItem("mangas")
+
+) || [];
 
 
 
-lista =
-lista.concat(cadastrados);
+lista = lista.concat(cadastrados);
+
 
 
 
 
 
 let catalogo =
+
 document.getElementById("catalogo");
 
 
@@ -247,7 +367,6 @@ lista.forEach(function(manga,index){
 catalogo.innerHTML += `
 
 
-
 <div class="card">
 
 
@@ -255,17 +374,22 @@ catalogo.innerHTML += `
 
 
 <h3>
+
 ${manga.nome}
+
 </h3>
 
 
 <p>
+
 ${manga.descricao}
+
 </p>
 
 
 
 <a href="manga.html?id=${index}">
+
 
 <button>
 
@@ -273,12 +397,12 @@ ${manga.descricao}
 
 </button>
 
+
 </a>
 
 
 
 </div>
-
 
 
 `;
@@ -292,21 +416,30 @@ ${manga.descricao}
 
 
 
+// PESQUISA
+
+
+
 function buscar(){
 
 
 
 let texto =
-document
-.getElementById("pesquisa")
+
+document.getElementById("pesquisa")
+
 .value
+
 .toLowerCase();
 
 
 
 
 let cards =
+
 document.getElementsByClassName("card");
+
+
 
 
 
@@ -315,46 +448,63 @@ for(let i=0;i<cards.length;i++){
 
 
 let nome =
+
 cards[i]
+
 .querySelector("h3")
+
 .innerHTML
+
 .toLowerCase();
 
 
 
+
 cards[i].style.display =
+
 nome.includes(texto)
+
 ?
+
 "block"
+
 :
+
 "none";
 
 
-}
-
-
 
 }
 
 
 
+}
 
 
+
+
+
+
+
+// LOGIN
 
 
 
 let logado =
+
 localStorage.getItem("login");
 
 
 
 let nome =
+
 localStorage.getItem("nomeUsuario");
 
 
 
 
 let area =
+
 document.getElementById("usuario");
 
 
@@ -364,10 +514,13 @@ document.getElementById("usuario");
 if(logado==="sim"){
 
 
+
 area.innerHTML =
 
-"👤 Olá, "+nome+
+"👤 Olá "+nome+
+
 " <button onclick='sair()'>Sair</button>";
+
 
 
 }
@@ -377,7 +530,7 @@ else{
 
 area.innerHTML =
 
-"Você não está logado";
+"Faça login para salvar seu progresso";
 
 
 }
@@ -401,8 +554,8 @@ location.reload();
 
 
 
-</script>
 
+</script>
 
 
 
