@@ -8,13 +8,14 @@
 
 <title>Animix - Mangás</title>
 
+
 <style>
 
 body {
     margin:0;
     background:#111;
     color:white;
-    font-family:Arial, sans-serif;
+    font-family:Arial,sans-serif;
 }
 
 
@@ -35,6 +36,7 @@ h1 {
 }
 
 
+
 .pesquisa {
 
     width:80%;
@@ -46,12 +48,14 @@ h1 {
 }
 
 
+
 .menu {
 
     text-align:center;
     padding:15px;
 
 }
+
 
 
 .menu a {
@@ -61,6 +65,7 @@ h1 {
     text-decoration:none;
 
 }
+
 
 
 .catalogo {
@@ -74,6 +79,7 @@ h1 {
 }
 
 
+
 .card {
 
     background:#222;
@@ -83,6 +89,7 @@ h1 {
     text-align:center;
 
 }
+
 
 
 .card img {
@@ -95,11 +102,13 @@ h1 {
 }
 
 
+
 .card h3 {
 
     color:#ffcc00;
 
 }
+
 
 
 button {
@@ -108,11 +117,13 @@ button {
     color:#111;
     border:none;
     padding:10px;
+    margin:5px;
     border-radius:8px;
     cursor:pointer;
     font-weight:bold;
 
 }
+
 
 
 .favorito {
@@ -123,10 +134,12 @@ button {
 }
 
 
+
 </style>
 
 
 </head>
+
 
 
 <body>
@@ -138,41 +151,55 @@ button {
 
 <h1>📚 Animix</h1>
 
+
 <p>Leia seus mangás favoritos</p>
 
 
-<input 
+
+<input
 id="pesquisa"
 class="pesquisa"
-placeholder="🔎 Pesquisar..."
+placeholder="🔎 Pesquisar mangá..."
 onkeyup="buscar()"
 >
+
 
 
 </header>
 
 
 
+
 <div class="menu">
 
+
 <a href="index.html">
+
 🏠 Início
+
 </a>
 
 
 <a href="favoritos.html">
+
 ⭐ Favoritos
+
 </a>
 
 
 </div>
+
+
 
 
 
 
 <div class="catalogo" id="catalogo">
 
+
 </div>
+
+
 
 
 
@@ -181,12 +208,16 @@ onkeyup="buscar()"
 <script src="dados.js"></script>
 
 
+
+
 <script>
 
 
 
 let catalogo =
 document.getElementById("catalogo");
+
+
 
 
 
@@ -204,12 +235,16 @@ catalogo.innerHTML += `
 
 
 <h3>
+
 ${manga.nome}
+
 </h3>
 
 
 <p>
+
 ${manga.descricao}
+
 </p>
 
 
@@ -217,20 +252,24 @@ ${manga.descricao}
 <a href="manga.html?id=${index}">
 
 <button>
-📖 Ver mangá
+
+📖 Ler
+
 </button>
 
 </a>
 
 
 
-<button 
+
+<button
 class="favorito"
-onclick="favoritar(${index})">
+onclick="favoritar('${manga.nome}')">
 
 ⭐ Favoritar
 
 </button>
+
 
 
 </div>
@@ -251,11 +290,13 @@ onclick="favoritar(${index})">
 function buscar(){
 
 
+
 let texto =
 document
 .getElementById("pesquisa")
 .value
 .toLowerCase();
+
 
 
 
@@ -265,7 +306,9 @@ document
 
 
 
+
 for(let i=0;i<cards.length;i++){
+
 
 
 let nome =
@@ -276,12 +319,19 @@ cards[i]
 
 
 
-cards[i].style.display =
-nome.includes(texto)
-?
-"block"
-:
-"none";
+
+if(nome.includes(texto)){
+
+
+cards[i].style.display="block";
+
+
+}
+
+else{
+
+
+cards[i].style.display="none";
 
 
 }
@@ -290,12 +340,16 @@ nome.includes(texto)
 }
 
 
+}
 
 
 
 
 
-function favoritar(index){
+
+
+function favoritar(nome){
+
 
 
 let favoritos =
@@ -303,28 +357,13 @@ JSON.parse(localStorage.getItem("favoritos")) || [];
 
 
 
-let manga =
-mangas[index];
+
+if(!favoritos.includes(nome)){
 
 
 
-let existe =
-favoritos.find(
-item=>item.nome===manga.nome
-);
+favoritos.push(nome);
 
-
-
-if(!existe){
-
-
-favoritos.push(manga);
-
-
-alert("⭐ Adicionado aos favoritos");
-
-
-}
 
 
 localStorage.setItem(
@@ -334,10 +373,26 @@ JSON.stringify(favoritos)
 
 
 
+alert("⭐ Adicionado aos favoritos");
+
+
+}
+
+else{
+
+
+alert("Esse mangá já está nos favoritos");
+
+
 }
 
 
+}
+
+
+
 </script>
+
 
 
 
