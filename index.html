@@ -6,18 +6,17 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Animix - Mangás</title>
-
+<title>Animix</title>
 
 <style>
 
 body{
 margin:0;
+padding-bottom:80px;
 background:#111;
 color:white;
 font-family:Arial,sans-serif;
 }
-
 
 header{
 background:#222;
@@ -25,62 +24,87 @@ padding:20px;
 text-align:center;
 }
 
-
 h1{
 color:#ffcc00;
 }
 
-
 .pesquisa{
-
 width:80%;
 max-width:500px;
 padding:12px;
 border-radius:8px;
 border:none;
-
 }
 
 
-.menu{
+.usuario{
+background:#333;
+padding:10px;
+border-radius:8px;
+margin:10px;
+}
 
-text-align:center;
+
+.catalogo{
+display:flex;
+flex-wrap:wrap;
+justify-content:center;
+gap:20px;
+padding:20px;
+}
+
+
+.card{
+background:#222;
+width:200px;
 padding:15px;
-
+border-radius:12px;
+text-align:center;
 }
 
 
-.menu a{
-
-color:white;
-margin:8px;
-text-decoration:none;
-
+.card img{
+width:180px;
+height:260px;
+object-fit:cover;
+border-radius:10px;
 }
 
 
 button{
-
 background:#ffcc00;
-color:#111;
 border:none;
 padding:10px;
 border-radius:8px;
 cursor:pointer;
 font-weight:bold;
+}
+
+
+
+.menu-fixo{
+
+position:fixed;
+bottom:0;
+left:0;
+width:100%;
+background:#222;
+display:flex;
+justify-content:space-around;
+padding:10px 0;
+z-index:999;
 
 }
 
 
-.usuario{
+.menu-fixo a{
 
-background:#333;
-padding:10px;
-margin:10px;
-border-radius:8px;
+color:white;
+text-decoration:none;
+text-align:center;
+font-size:14px;
 
 }
-
 
 
 .secao{
@@ -94,53 +118,9 @@ padding:20px;
 .continuar{
 
 background:#222;
-border-radius:12px;
 padding:15px;
-text-align:center;
-max-width:400px;
-margin:auto;
-
-}
-
-
-
-.catalogo{
-
-display:flex;
-flex-wrap:wrap;
-justify-content:center;
-gap:20px;
-padding:20px;
-
-}
-
-
-
-.card{
-
-background:#222;
-width:200px;
-padding:15px;
-border-radius:12px;
-text-align:center;
-
-}
-
-
-
-.card img{
-
-width:180px;
-height:260px;
-object-fit:cover;
 border-radius:10px;
-
-}
-
-
-.card h3{
-
-color:#ffcc00;
+text-align:center;
 
 }
 
@@ -149,7 +129,6 @@ color:#ffcc00;
 
 
 </head>
-
 
 
 <body>
@@ -162,20 +141,15 @@ color:#ffcc00;
 <h1>📚 Animix</h1>
 
 
-
-<div id="usuario" class="usuario">
-
-</div>
+<div id="usuario"></div>
 
 
-
-<input
-id="pesquisa"
+<input 
 class="pesquisa"
-placeholder="🔎 Pesquisar mangá..."
+id="pesquisa"
+placeholder="🔎 Pesquisar..."
 onkeyup="buscar()"
 >
-
 
 
 </header>
@@ -183,28 +157,12 @@ onkeyup="buscar()"
 
 
 
-<div class="menu">
+
+<div id="continuar"></div>
 
 
-<a href="index.html">
-🏠 Início
-</a>
 
-
-<a href="favoritos.html">
-⭐ Favoritos
-</a>
-
-
-<a href="login.html">
-🔐 Login
-</a>
-
-
-<a href="admin.html">
-⚙️ Admin
-</a>
-
+<div class="catalogo" id="catalogo">
 
 </div>
 
@@ -213,14 +171,33 @@ onkeyup="buscar()"
 
 
 
-<div id="continuarArea"></div>
+
+<div class="menu-fixo">
 
 
+<a href="index.html">
+🏠<br>
+Início
+</a>
 
 
+<a href="favoritos.html">
+⭐<br>
+Favoritos
+</a>
 
 
-<div class="catalogo" id="catalogo">
+<a href="biblioteca.html">
+📚<br>
+Biblioteca
+</a>
+
+
+<a href="perfil.html">
+👤<br>
+Perfil
+</a>
+
 
 </div>
 
@@ -238,121 +215,22 @@ onkeyup="buscar()"
 
 
 
+let lista=mangas;
 
 
-// HISTÓRICO DE LEITURA
+let extras=
 
+JSON.parse(localStorage.getItem("mangas")) || [];
 
 
-let ultimo =
 
-JSON.parse(
+lista=lista.concat(extras);
 
-localStorage.getItem("ultimoLido")
 
-);
 
 
 
-
-
-if(ultimo){
-
-
-
-document.getElementById("continuarArea").innerHTML = `
-
-
-
-<div class="secao">
-
-
-<h2>
-
-📌 Continuar lendo
-
-</h2>
-
-
-
-<div class="continuar">
-
-
-<h3>
-
-${ultimo.manga}
-
-</h3>
-
-
-
-<p>
-
-Capítulo ${ultimo.capitulo}
-
-</p>
-
-
-
-<a href="leitor.html?id=${ultimo.id}&cap=${ultimo.capitulo}">
-
-
-<button>
-
-▶ Continuar
-
-</button>
-
-
-</a>
-
-
-
-</div>
-
-
-</div>
-
-
-
-`;
-
-
-
-}
-
-
-
-
-
-
-
-// CATÁLOGO
-
-
-
-let lista = mangas;
-
-
-
-let cadastrados =
-
-JSON.parse(
-
-localStorage.getItem("mangas")
-
-) || [];
-
-
-
-lista = lista.concat(cadastrados);
-
-
-
-
-
-
-let catalogo =
+let catalogo=
 
 document.getElementById("catalogo");
 
@@ -401,7 +279,6 @@ ${manga.descricao}
 </a>
 
 
-
 </div>
 
 
@@ -416,51 +293,92 @@ ${manga.descricao}
 
 
 
-// PESQUISA
+
+let ultimo=
+
+JSON.parse(localStorage.getItem("ultimoLido"));
+
+
+
+if(ultimo){
+
+
+document.getElementById("continuar").innerHTML=`
+
+<div class="secao">
+
+<h2>📌 Continuar lendo</h2>
+
+
+<div class="continuar">
+
+
+<h3>${ultimo.manga}</h3>
+
+
+<p>
+
+Capítulo ${ultimo.capitulo}
+
+</p>
+
+
+<a href="leitor.html?id=${ultimo.id}&cap=${ultimo.capitulo}">
+
+
+<button>
+
+▶ Continuar
+
+</button>
+
+
+</a>
+
+
+</div>
+
+
+</div>
+
+`;
+
+
+
+}
+
+
+
+
+
 
 
 
 function buscar(){
 
 
+let texto=
 
-let texto =
-
-document.getElementById("pesquisa")
-
-.value
-
-.toLowerCase();
+document.getElementById("pesquisa").value.toLowerCase();
 
 
 
-
-let cards =
+let cards=
 
 document.getElementsByClassName("card");
-
-
 
 
 
 for(let i=0;i<cards.length;i++){
 
 
+let nome=
 
-let nome =
-
-cards[i]
-
-.querySelector("h3")
-
-.innerHTML
-
-.toLowerCase();
+cards[i].querySelector("h3").innerHTML.toLowerCase();
 
 
 
-
-cards[i].style.display =
+cards[i].style.display=
 
 nome.includes(texto)
 
@@ -473,7 +391,6 @@ nome.includes(texto)
 "none";
 
 
-
 }
 
 
@@ -485,42 +402,18 @@ nome.includes(texto)
 
 
 
-
-// LOGIN
-
-
-
-let logado =
-
-localStorage.getItem("login");
-
-
-
-let nome =
+let nome=
 
 localStorage.getItem("nomeUsuario");
 
 
 
-
-let area =
-
-document.getElementById("usuario");
+if(nome){
 
 
+document.getElementById("usuario").innerHTML=
 
-
-
-if(logado==="sim"){
-
-
-
-area.innerHTML =
-
-"👤 Olá "+nome+
-
-" <button onclick='sair()'>Sair</button>";
-
+"👤 Olá "+nome;
 
 
 }
@@ -528,7 +421,7 @@ area.innerHTML =
 else{
 
 
-area.innerHTML =
+document.getElementById("usuario").innerHTML=
 
 "Faça login para salvar seu progresso";
 
@@ -537,25 +430,8 @@ area.innerHTML =
 
 
 
-
-
-function sair(){
-
-
-localStorage.removeItem("login");
-
-localStorage.removeItem("nomeUsuario");
-
-
-location.reload();
-
-
-}
-
-
-
-
 </script>
+
 
 
 
