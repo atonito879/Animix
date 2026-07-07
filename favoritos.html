@@ -1,1 +1,201 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
 
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Animix - Favoritos</title>
+
+
+<style>
+
+body {
+    margin:0;
+    background:#111;
+    color:white;
+    font-family:Arial, sans-serif;
+}
+
+
+header {
+
+    background:#222;
+    padding:20px;
+    text-align:center;
+
+}
+
+
+h1 {
+
+    color:#ffcc00;
+
+}
+
+
+
+.catalogo {
+
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:center;
+    gap:20px;
+    padding:20px;
+
+}
+
+
+
+.card {
+
+    background:#222;
+    width:200px;
+    padding:15px;
+    border-radius:12px;
+    text-align:center;
+
+}
+
+
+
+.card img {
+
+    width:180px;
+    height:260px;
+    border-radius:10px;
+
+}
+
+
+
+button {
+
+    background:#ffcc00;
+    border:none;
+    padding:10px;
+    border-radius:8px;
+    cursor:pointer;
+
+}
+
+
+
+a {
+
+    text-decoration:none;
+
+}
+
+
+
+.voltar {
+
+    display:block;
+    text-align:center;
+    color:white;
+    margin:20px;
+
+}
+
+
+
+</style>
+
+
+</head>
+
+
+<body>
+
+
+<header>
+
+<h1>⭐ Meus Favoritos</h1>
+
+</header>
+
+
+
+<div class="catalogo" id="listaFavoritos">
+
+</div>
+
+
+
+
+<a class="voltar" href="index.html">
+
+⬅ Voltar ao catálogo
+
+</a>
+
+
+
+
+<script>
+
+
+let favoritos = JSON.parse(localStorage.getItem("favoritos")) || [];
+
+let lista = document.getElementById("listaFavoritos");
+
+
+
+if(favoritos.length === 0){
+
+
+lista.innerHTML =
+"<h2>Nenhum mangá favorito ainda</h2>";
+
+
+}
+
+
+
+favoritos.forEach(function(manga){
+
+
+
+lista.innerHTML += `
+
+
+<div class="card">
+
+
+<img src="${manga.capa}">
+
+
+<h3>${manga.nome}</h3>
+
+
+
+<a href="${manga.link}">
+
+<button>
+Abrir mangá
+</button>
+
+</a>
+
+
+
+</div>
+
+
+`;
+
+
+
+});
+
+
+
+</script>
+
+
+
+</body>
+
+</html>
