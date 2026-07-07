@@ -8,6 +8,7 @@
 
 <title>Animix - Mangás</title>
 
+
 <style>
 
 body {
@@ -19,38 +20,51 @@ body {
 
 
 header {
+
     background:#222;
     padding:20px;
     text-align:center;
+
 }
 
 
 h1 {
+
     color:#ffcc00;
     font-size:35px;
+
 }
 
 
 .pesquisa {
+
     width:80%;
     max-width:500px;
     padding:12px;
     border-radius:8px;
     border:none;
+    font-size:16px;
+
 }
 
 
+
 .menu {
+
     text-align:center;
     padding:15px;
+
 }
 
 
 .menu a {
+
     color:white;
     margin:10px;
     text-decoration:none;
+
 }
+
 
 
 .catalogo {
@@ -64,6 +78,7 @@ h1 {
 }
 
 
+
 .card {
 
     background:#222;
@@ -73,6 +88,7 @@ h1 {
     text-align:center;
 
 }
+
 
 
 .card img {
@@ -85,11 +101,13 @@ h1 {
 }
 
 
+
 .card h3 {
 
     color:#ffcc00;
 
 }
+
 
 
 button {
@@ -105,11 +123,16 @@ button {
 }
 
 
+
 a {
+
     text-decoration:none;
+
 }
 
+
 </style>
+
 
 </head>
 
@@ -117,16 +140,21 @@ a {
 <body>
 
 
+
 <header>
 
+
 <h1>📚 Animix</h1>
+
 
 <p>Leia seus mangás favoritos</p>
 
 
 <input 
+id="pesquisa"
 class="pesquisa"
 placeholder="🔎 Pesquisar mangá..."
+onkeyup="buscar()"
 >
 
 
@@ -136,28 +164,48 @@ placeholder="🔎 Pesquisar mangá..."
 
 <div class="menu">
 
-<a href="index.html">Início</a>
+<a href="index.html">
+Início
+</a>
 
-<a href="#">Mangás</a>
 
-<a href="#">Favoritos</a>
+<a href="#">
+Mangás
+</a>
+
+
+<a href="#">
+Favoritos
+</a>
+
 
 </div>
 
 
 
 
-<div class="catalogo">
+<div class="catalogo" id="catalogo">
+
+
 
 
 
 <div class="card">
 
+
 <img src="https://via.placeholder.com/180x260">
 
-<h3>Mangá Exemplo</h3>
 
-<p>Aventura e ação</p>
+<h3>
+Mangá Exemplo
+</h3>
+
+
+<p>
+Aventura e ação
+</p>
+
+
 
 <a href="manga.html">
 
@@ -167,7 +215,10 @@ Ver mangá
 
 </a>
 
+
 </div>
+
+
 
 
 
@@ -175,11 +226,19 @@ Ver mangá
 
 <div class="card">
 
+
 <img src="https://via.placeholder.com/180x260">
 
-<h3>Nova Aventura</h3>
 
-<p>Fantasia e mistério</p>
+<h3>
+Nova Aventura
+</h3>
+
+
+<p>
+Fantasia e mistério
+</p>
+
 
 
 <a href="aventura.html">
@@ -190,7 +249,9 @@ Ver mangá
 
 </a>
 
+
 </div>
+
 
 
 
@@ -199,11 +260,19 @@ Ver mangá
 
 <div class="card">
 
+
 <img src="https://via.placeholder.com/180x260">
 
-<h3>Samurai Lendário</h3>
 
-<p>Batalhas épicas</p>
+<h3>
+Samurai Lendário
+</h3>
+
+
+<p>
+Batalhas épicas
+</p>
+
 
 
 <a href="samurai.html">
@@ -214,17 +283,72 @@ Ver mangá
 
 </a>
 
+
+</div>
+
+
+
+
 </div>
 
 
 
-</div>
+
+
+<script>
+
+
+function buscar(){
+
+
+let texto = document
+.getElementById("pesquisa")
+.value
+.toLowerCase();
+
+
+
+let cards = document
+.getElementsByClassName("card");
+
+
+
+for(let i = 0; i < cards.length; i++){
+
+
+let nome = cards[i]
+.getElementsByTagName("h3")[0]
+.innerHTML
+.toLowerCase();
+
+
+
+if(nome.includes(texto)){
+
+
+cards[i].style.display="block";
+
+
+}else{
+
+
+cards[i].style.display="none";
+
+
+}
+
+
+}
+
+
+}
+
+
+</script>
 
 
 
 </body>
 
+
 </html>
-
-
-
