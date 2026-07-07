@@ -8,101 +8,90 @@
 
 <title>Animix - Leitor</title>
 
-
 <style>
 
-body {
+body{
 
-    margin:0;
-    background:#111;
-    color:white;
-    font-family:Arial,sans-serif;
-
-}
-
-
-header {
-
-    background:#222;
-    padding:20px;
-    text-align:center;
-    position:sticky;
-    top:0;
-    z-index:10;
+margin:0;
+background:#111;
+color:white;
+font-family:Arial,sans-serif;
 
 }
 
 
-h1 {
+header{
 
-    color:#ffcc00;
+background:#222;
+padding:20px;
+text-align:center;
 
 }
 
 
-.controles {
+h1{
 
-    text-align:center;
-    padding:15px;
+color:#ffcc00;
 
 }
 
 
 
-button {
+.controles{
 
-    background:#ffcc00;
-    color:#111;
-    border:none;
-    padding:10px 15px;
-    border-radius:8px;
-    cursor:pointer;
-    font-weight:bold;
+text-align:center;
+padding:15px;
 
 }
 
 
 
-a {
+button{
 
-    text-decoration:none;
-
-}
-
-
-.voltar {
-
-    background:white;
-    color:#111;
-    padding:10px 15px;
-    border-radius:8px;
+background:#ffcc00;
+color:#111;
+border:none;
+padding:10px 15px;
+border-radius:8px;
+cursor:pointer;
+font-weight:bold;
 
 }
 
 
 
-.leitor {
+a{
 
-    max-width:900px;
-    margin:auto;
-
-}
-
-
-
-.pagina {
-
-    margin-bottom:15px;
-    text-align:center;
+text-decoration:none;
 
 }
 
 
 
-.pagina img {
+.leitor{
 
-    width:100%;
-    display:block;
+max-width:900px;
+margin:auto;
+
+}
+
+
+
+.pagina img{
+
+width:100%;
+display:block;
+margin-bottom:15px;
+
+}
+
+
+.voltar{
+
+background:white;
+color:#111;
+padding:10px;
+border-radius:8px;
 
 }
 
@@ -117,11 +106,15 @@ a {
 
 
 
+
 <header>
+
 
 <h1>📖 Animix</h1>
 
+
 <h2 id="titulo"></h2>
+
 
 </header>
 
@@ -131,20 +124,18 @@ a {
 <div class="controles">
 
 
-<button onclick="capAnterior()">
+<button onclick="anterior()">
 
-⬅ Capítulo anterior
-
-</button>
-
-
-
-<button onclick="proximoCap()">
-
-Próximo capítulo ➡
+⬅ Anterior
 
 </button>
 
+
+<button onclick="proximo()">
+
+Próximo ➡
+
+</button>
 
 
 <br><br>
@@ -157,7 +148,6 @@ Próximo capítulo ➡
 </a>
 
 
-
 </div>
 
 
@@ -165,8 +155,8 @@ Próximo capítulo ➡
 
 <div class="leitor" id="leitor">
 
-
 </div>
+
 
 
 
@@ -176,7 +166,10 @@ Próximo capítulo ➡
 <script src="dados.js"></script>
 
 
+
+
 <script>
+
 
 
 let url =
@@ -199,25 +192,68 @@ mangas[id];
 
 
 
-let capitulo =
-manga.capitulos.find(
-item=>item.numero===cap
+
+
+// SALVA HISTÓRICO
+
+
+let historico = {
+
+
+manga:manga.nome,
+
+
+id:id,
+
+
+capitulo:cap,
+
+
+data:new Date().toLocaleString()
+
+
+};
+
+
+
+localStorage.setItem(
+
+"ultimoLido",
+
+JSON.stringify(historico)
+
 );
+
+
 
 
 
 
 document.getElementById("titulo").innerHTML =
 
-manga.nome +
-" - Capítulo " +
+manga.nome+
+" - Capítulo "+
 cap;
 
 
 
 
 
+let capitulo =
+
+manga.capitulos.find(
+
+item=>item.numero===cap
+
+);
+
+
+
+
+
+
 let leitor =
+
 document.getElementById("leitor");
 
 
@@ -235,8 +271,11 @@ leitor.innerHTML += `
 
 
 <p>
+
 Página ${index+1}
+
 </p>
+
 
 
 <img src="${pagina}">
@@ -256,27 +295,32 @@ Página ${index+1}
 
 
 
-function proximoCap(){
+
+function proximo(){
 
 
 
-let proximo =
+let existe =
+
 manga.capitulos.find(
+
 item=>item.numero===cap+1
+
 );
 
 
 
-if(proximo){
+if(existe){
 
 
-window.location.href =
+
+location.href=
+
 "leitor.html?id="+id+"&cap="+(cap+1);
 
 
+
 }
-
-
 
 else{
 
@@ -294,22 +338,19 @@ alert("Último capítulo");
 
 
 
-function capAnterior(){
+
+function anterior(){
 
 
 
-let anterior =
-manga.capitulos.find(
-item=>item.numero===cap-1
-);
+if(cap>1){
 
 
 
-if(anterior){
+location.href=
 
-
-window.location.href =
 "leitor.html?id="+id+"&cap="+(cap-1);
+
 
 
 }
@@ -321,7 +362,6 @@ window.location.href =
 
 
 </script>
-
 
 
 
