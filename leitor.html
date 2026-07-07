@@ -1,137 +1,274 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>Animix - Leitor</title>
 
 <style>
+
 body {
-    margin: 0;
-    background: #111;
-    color: white;
-    font-family: Arial, sans-serif;
+    margin:0;
+    background:#111;
+    color:white;
+    font-family:Arial, sans-serif;
 }
+
 
 header {
-    background: #222;
-    padding: 20px;
-    text-align: center;
-    position: sticky;
-    top: 0;
+
+    background:#222;
+    padding:15px;
+    text-align:center;
+    position:sticky;
+    top:0;
+    z-index:10;
+
 }
+
 
 h1 {
-    color: #ffcc00;
+
+    color:#ffcc00;
+    margin:5px;
+
 }
+
 
 h2 {
-    margin: 10px;
+
+    margin:5px;
+
 }
+
 
 .controles {
-    text-align: center;
-    padding: 15px;
+
+    text-align:center;
+    padding:15px;
+
 }
+
 
 button {
-    background: #ffcc00;
-    border: none;
-    padding: 10px 20px;
-    margin: 5px;
-    border-radius: 8px;
-    cursor: pointer;
+
+    background:#ffcc00;
+    color:#111;
+    border:none;
+    padding:10px 15px;
+    margin:5px;
+    border-radius:8px;
+    cursor:pointer;
+    font-weight:bold;
+
 }
 
-.leitor {
-    max-width: 900px;
-    margin: auto;
-    text-align: center;
+
+button:hover {
+
+    opacity:0.8;
+
 }
 
-.pagina {
-    width: 100%;
-    margin-bottom: 10px;
-}
-
-.pagina img {
-    width: 100%;
-    display: block;
-}
 
 a {
-    text-decoration: none;
+
+    text-decoration:none;
+
 }
+
+
+.voltar {
+
+    background:white;
+    color:#111;
+    padding:10px 15px;
+    border-radius:8px;
+
+}
+
+
+.leitor {
+
+    max-width:900px;
+    margin:auto;
+
+}
+
+
+.pagina {
+
+    margin-bottom:15px;
+    text-align:center;
+
+}
+
+
+.pagina img {
+
+    width:100%;
+    display:block;
+
+}
+
+
+.info {
+
+    text-align:center;
+    padding:10px;
+
+}
+
 
 </style>
 
+
 </head>
+
 
 <body>
 
+
 <header>
+
 <h1>📖 Animix</h1>
 
 <h2>
-Mangá Exemplo - <span id="capitulo">Capítulo 1</span>
+Mangá Exemplo -
+<span id="capitulo"></span>
 </h2>
+
 
 </header>
 
 
+
 <div class="controles">
 
-<button onclick="voltarCapitulo()">
-⬅ Capítulo anterior
+
+<button onclick="capAnterior()">
+⬅ Anterior
 </button>
 
-<button onclick="proximoCapitulo()">
-Próximo capítulo ➡
+
+<button onclick="proximoCap()">
+Próximo ➡
 </button>
 
+
+<br><br>
+
+
+<a class="voltar" href="manga.html">
+📚 Capítulos
+</a>
+
+
 </div>
 
 
-<div class="leitor">
 
-<div class="pagina">
-<img src="https://via.placeholder.com/800x1200?text=Página+1">
-</div>
 
-<div class="pagina">
-<img src="https://via.placeholder.com/800x1200?text=Página+2">
-</div>
+<div class="info">
 
-<div class="pagina">
-<img src="https://via.placeholder.com/800x1200?text=Página+3">
-</div>
+Página:
+<span id="totalPaginas"></span>
 
 </div>
+
+
+
+
+<div class="leitor" id="leitor">
+
+
+</div>
+
+
+
 
 
 <script>
 
-let parametros = new URLSearchParams(window.location.search);
 
-let capitulo = Number(parametros.get("cap")) || 1;
+// PEGA O CAPÍTULO PELO LINK
+
+let url = new URLSearchParams(window.location.search);
+
+let capitulo = Number(url.get("cap")) || 1;
+
 
 
 document.getElementById("capitulo").innerHTML =
 "Capítulo " + capitulo;
 
 
-function proximoCapitulo(){
+
+// PÁGINAS DO CAPÍTULO
+
+let paginas = [
+
+"https://via.placeholder.com/800x1200?text=Capitulo+"+capitulo+"+-+Pagina+1",
+
+"https://via.placeholder.com/800x1200?text=Capitulo+"+capitulo+"+-+Pagina+2",
+
+"https://via.placeholder.com/800x1200?text=Capitulo+"+capitulo+"+-+Pagina+3",
+
+];
+
+
+
+document.getElementById("totalPaginas").innerHTML =
+paginas.length;
+
+
+
+// MONTA AS PÁGINAS AUTOMATICAMENTE
+
+
+let leitor = document.getElementById("leitor");
+
+
+paginas.forEach(function(pagina, index){
+
+
+leitor.innerHTML +=
+
+`
+<div class="pagina">
+
+<p>Página ${index + 1}</p>
+
+<img src="${pagina}">
+
+</div>
+`;
+
+
+});
+
+
+
+
+
+function proximoCap(){
 
 capitulo++;
 
 window.location.href =
 "leitor.html?cap=" + capitulo;
 
+
 }
 
 
-function voltarCapitulo(){
+
+
+function capAnterior(){
+
 
 if(capitulo > 1){
 
@@ -142,10 +279,15 @@ window.location.href =
 
 }
 
+
 }
+
+
 
 </script>
 
 
 </body>
+
 </html>
+
