@@ -8,30 +8,45 @@
 
 <title>Animix - Admin</title>
 
+
 <style>
 
 body{
+
 margin:0;
 background:#111;
 color:white;
 font-family:Arial,sans-serif;
+
 }
 
+
 header{
+
 background:#222;
 padding:20px;
 text-align:center;
+
 }
+
 
 h1{
+
 color:#ffcc00;
+
 }
 
+
+
 .container{
+
 max-width:600px;
 margin:auto;
 padding:20px;
+
 }
+
+
 
 input, textarea{
 
@@ -44,9 +59,11 @@ border:none;
 }
 
 
+
 button{
 
 background:#ffcc00;
+color:#111;
 border:none;
 padding:10px 15px;
 border-radius:8px;
@@ -56,12 +73,24 @@ font-weight:bold;
 }
 
 
+
 .remover{
 
 background:#c00000;
 color:white;
 
 }
+
+
+
+.inicio{
+
+background:white;
+color:#111;
+margin:10px;
+
+}
+
 
 
 .card{
@@ -74,6 +103,7 @@ border-radius:10px;
 }
 
 
+
 .card img{
 
 width:120px;
@@ -82,26 +112,100 @@ border-radius:8px;
 }
 
 
+
+#painel{
+
+display:none;
+
+}
+
+
 </style>
 
+
 </head>
+
 
 
 <body>
 
 
+
+
 <header>
 
-<h1>⚙️ Painel Animix</h1>
+<h1>⚙️ Animix Admin</h1>
 
 </header>
+
+
 
 
 
 <div class="container">
 
 
+
+<div id="login">
+
+
+<h2>🔐 Login Admin</h2>
+
+
+<input 
+id="senha"
+type="password"
+placeholder="Digite a senha"
+>
+
+
+<button onclick="entrar()">
+
+Entrar
+
+</button>
+
+
+<p id="erro"></p>
+
+
+
+</div>
+
+
+
+
+
+
+
+<div id="painel">
+
+
+
+<a href="index.html">
+
+<button class="inicio">
+
+🏠 Início
+
+</button>
+
+</a>
+
+
+
+<button onclick="sair()">
+
+🚪 Sair
+
+</button>
+
+
+
+
+
 <h2>Novo Mangá</h2>
+
 
 
 <input id="nome" placeholder="Nome do mangá">
@@ -113,13 +217,13 @@ border-radius:8px;
 <textarea id="descricao" placeholder="Descrição"></textarea>
 
 
-<input id="capitulos" placeholder="Capítulos (ex: 1,2,3)">
+<input id="capitulos" placeholder="Capítulos exemplo: 1,2,3">
 
 
 
 <button onclick="adicionar()">
 
-Adicionar
+Adicionar Mangá
 
 </button>
 
@@ -127,6 +231,7 @@ Adicionar
 
 
 <h2>Mangás cadastrados</h2>
+
 
 
 <div id="lista"></div>
@@ -138,7 +243,110 @@ Adicionar
 
 
 
+</div>
+
+
+
+
+
+
+
 <script>
+
+
+
+let senhaCorreta =
+"animix123";
+
+
+
+
+function entrar(){
+
+
+let senha =
+document.getElementById("senha").value;
+
+
+
+if(senha===senhaCorreta){
+
+
+
+localStorage.setItem(
+"admin",
+"sim"
+);
+
+
+
+mostrarPainel();
+
+
+
+}
+
+else{
+
+
+document.getElementById("erro").innerHTML =
+"❌ Senha incorreta";
+
+
+}
+
+
+}
+
+
+
+
+
+
+function mostrarPainel(){
+
+
+
+document.getElementById("login").style.display="none";
+
+
+document.getElementById("painel").style.display="block";
+
+
+mostrar();
+
+
+}
+
+
+
+
+function sair(){
+
+
+localStorage.removeItem("admin");
+
+
+location.reload();
+
+
+}
+
+
+
+
+
+if(localStorage.getItem("admin")==="sim"){
+
+
+mostrarPainel();
+
+
+}
+
+
+
+
 
 
 let mangas =
@@ -146,14 +354,16 @@ JSON.parse(localStorage.getItem("mangas")) || [];
 
 
 
-mostrar();
+
 
 
 
 function adicionar(){
 
 
-let manga = {
+
+let manga={
+
 
 
 nome:
@@ -172,7 +382,10 @@ capitulos:
 document.getElementById("capitulos").value.split(",")
 
 
+
 };
+
+
 
 
 
@@ -190,7 +403,10 @@ JSON.stringify(mangas)
 mostrar();
 
 
+
 }
+
+
 
 
 
@@ -198,8 +414,10 @@ mostrar();
 function mostrar(){
 
 
+
 let lista =
 document.getElementById("lista");
+
 
 
 lista.innerHTML="";
@@ -211,6 +429,7 @@ mangas.forEach(function(manga,index){
 
 
 lista.innerHTML += `
+
 
 
 <div class="card">
@@ -252,10 +471,13 @@ onclick="remover(${index})">
 
 
 
+
+
 function remover(index){
 
 
-if(confirm("Deseja remover este mangá?")){
+
+if(confirm("Remover este mangá?")){
 
 
 mangas.splice(index,1);
@@ -279,7 +501,9 @@ mostrar();
 }
 
 
+
 </script>
+
 
 
 </body>
