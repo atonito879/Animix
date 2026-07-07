@@ -26,6 +26,10 @@ h1 {
     color: #ffcc00;
 }
 
+h2 {
+    margin: 10px;
+}
+
 .controles {
     text-align: center;
     padding: 15px;
@@ -56,6 +60,10 @@ button {
     display: block;
 }
 
+a {
+    text-decoration: none;
+}
+
 </style>
 
 </head>
@@ -64,12 +72,24 @@ button {
 
 <header>
 <h1>📖 Animix</h1>
-<h2>Mangá Exemplo - Capítulo 1</h2>
+
+<h2>
+Mangá Exemplo - <span id="capitulo">Capítulo 1</span>
+</h2>
+
 </header>
 
+
 <div class="controles">
-<button>⬅ Capítulo anterior</button>
-<button>Próximo capítulo ➡</button>
+
+<button onclick="voltarCapitulo()">
+⬅ Capítulo anterior
+</button>
+
+<button onclick="proximoCapitulo()">
+Próximo capítulo ➡
+</button>
+
 </div>
 
 
@@ -88,6 +108,43 @@ button {
 </div>
 
 </div>
+
+
+<script>
+
+let parametros = new URLSearchParams(window.location.search);
+
+let capitulo = Number(parametros.get("cap")) || 1;
+
+
+document.getElementById("capitulo").innerHTML =
+"Capítulo " + capitulo;
+
+
+function proximoCapitulo(){
+
+capitulo++;
+
+window.location.href =
+"leitor.html?cap=" + capitulo;
+
+}
+
+
+function voltarCapitulo(){
+
+if(capitulo > 1){
+
+capitulo--;
+
+window.location.href =
+"leitor.html?cap=" + capitulo;
+
+}
+
+}
+
+</script>
 
 
 </body>
