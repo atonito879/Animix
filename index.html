@@ -8,6 +8,7 @@
 
 <title>Animix - Mangás</title>
 
+
 <style>
 
 body{
@@ -17,63 +18,54 @@ color:white;
 font-family:Arial,sans-serif;
 }
 
+
 header{
+
 background:#222;
 padding:20px;
 text-align:center;
+
 }
+
 
 h1{
+
 color:#ffcc00;
+
 }
 
+
 .pesquisa{
+
 width:80%;
 max-width:500px;
 padding:12px;
 border-radius:8px;
 border:none;
+
 }
+
+
 
 .menu{
+
 text-align:center;
 padding:15px;
+
 }
+
 
 .menu a{
+
 color:white;
-margin:10px;
+margin:8px;
 text-decoration:none;
+
 }
 
-.catalogo{
-display:flex;
-flex-wrap:wrap;
-justify-content:center;
-gap:20px;
-padding:20px;
-}
-
-.card{
-background:#222;
-width:200px;
-padding:15px;
-border-radius:12px;
-text-align:center;
-}
-
-.card img{
-width:180px;
-height:260px;
-object-fit:cover;
-border-radius:10px;
-}
-
-.card h3{
-color:#ffcc00;
-}
 
 button{
+
 background:#ffcc00;
 color:#111;
 border:none;
@@ -81,7 +73,61 @@ padding:10px;
 border-radius:8px;
 cursor:pointer;
 font-weight:bold;
+
 }
+
+
+
+.catalogo{
+
+display:flex;
+flex-wrap:wrap;
+justify-content:center;
+gap:20px;
+padding:20px;
+
+}
+
+
+
+.card{
+
+background:#222;
+width:200px;
+padding:15px;
+border-radius:12px;
+text-align:center;
+
+}
+
+
+
+.card img{
+
+width:180px;
+height:260px;
+object-fit:cover;
+border-radius:10px;
+
+}
+
+
+.card h3{
+
+color:#ffcc00;
+
+}
+
+
+.usuario{
+
+background:#333;
+padding:10px;
+margin:10px;
+border-radius:8px;
+
+}
+
 
 </style>
 
@@ -91,26 +137,36 @@ font-weight:bold;
 <body>
 
 
+
 <header>
+
 
 <h1>📚 Animix</h1>
 
-<p>Leia seus mangás favoritos</p>
+
+<div id="usuario" class="usuario">
+
+</div>
+
 
 
 <input 
 id="pesquisa"
 class="pesquisa"
-placeholder="🔎 Pesquisar..."
+placeholder="🔎 Pesquisar mangá..."
 onkeyup="buscar()"
 >
+
 
 
 </header>
 
 
 
+
+
 <div class="menu">
+
 
 <a href="index.html">
 🏠 Início
@@ -122,12 +178,22 @@ onkeyup="buscar()"
 </a>
 
 
+
+<a href="login.html">
+🔐 Login
+</a>
+
+
+
 <a href="admin.html">
 ⚙️ Admin
 </a>
 
 
+
 </div>
+
+
 
 
 
@@ -139,7 +205,12 @@ onkeyup="buscar()"
 
 
 
+
+
+
 <script src="dados.js"></script>
+
+
 
 
 <script>
@@ -155,13 +226,16 @@ JSON.parse(localStorage.getItem("mangas")) || [];
 
 
 
-lista = lista.concat(cadastrados);
+lista =
+lista.concat(cadastrados);
+
 
 
 
 
 let catalogo =
 document.getElementById("catalogo");
+
 
 
 
@@ -173,16 +247,22 @@ lista.forEach(function(manga,index){
 catalogo.innerHTML += `
 
 
+
 <div class="card">
 
 
 <img src="${manga.capa}">
 
 
-<h3>${manga.nome}</h3>
+<h3>
+${manga.nome}
+</h3>
 
 
-<p>${manga.descricao}</p>
+<p>
+${manga.descricao}
+</p>
+
 
 
 <a href="manga.html?id=${index}">
@@ -198,6 +278,7 @@ catalogo.innerHTML += `
 
 
 </div>
+
 
 
 `;
@@ -220,6 +301,7 @@ document
 .getElementById("pesquisa")
 .value
 .toLowerCase();
+
 
 
 
@@ -256,7 +338,71 @@ nome.includes(texto)
 
 
 
+
+
+
+
+
+let logado =
+localStorage.getItem("login");
+
+
+
+let nome =
+localStorage.getItem("nomeUsuario");
+
+
+
+
+let area =
+document.getElementById("usuario");
+
+
+
+
+
+if(logado==="sim"){
+
+
+area.innerHTML =
+
+"👤 Olá, "+nome+
+" <button onclick='sair()'>Sair</button>";
+
+
+}
+
+else{
+
+
+area.innerHTML =
+
+"Você não está logado";
+
+
+}
+
+
+
+
+
+function sair(){
+
+
+localStorage.removeItem("login");
+
+localStorage.removeItem("nomeUsuario");
+
+
+location.reload();
+
+
+}
+
+
+
 </script>
+
 
 
 
