@@ -1,42 +1,66 @@
+/* =====================================
+   ANIMIX v2.0
+   DADOS DOS MANGÁS
+===================================== */
+
+
 const mangas = [
 
+
 {
+    id: 1,
+
     nome: "Mangá Exemplo",
 
-    capa: "imagens/capas/manga-exemplo.jpg",
+    autor: "Autor Exemplo",
+
+    genero: "Ação",
+
+    capa:
+    "https://via.placeholder.com/300x450?text=Capa+Manga",
 
     descricao:
-    "Uma aventura cheia de ação e mistérios.",
+    "Este é um mangá de exemplo para testar o sistema do Animix.",
 
 
     capitulos: [
 
+
         {
+
             numero: 1,
+
+            titulo: "O começo",
 
             paginas: [
 
-                "imagens/paginas/manga-exemplo/cap1/1.jpg",
+                "https://via.placeholder.com/900x1300?text=Pagina+1",
 
-                "imagens/paginas/manga-exemplo/cap1/2.jpg",
+                "https://via.placeholder.com/900x1300?text=Pagina+2",
 
-                "imagens/paginas/manga-exemplo/cap1/3.jpg"
+                "https://via.placeholder.com/900x1300?text=Pagina+3"
 
             ]
+
         },
 
 
         {
+
             numero: 2,
 
+            titulo: "A continuação",
+
             paginas: [
 
-                "imagens/paginas/manga-exemplo/cap2/1.jpg",
+                "https://via.placeholder.com/900x1300?text=Pagina+1",
 
-                "imagens/paginas/manga-exemplo/cap2/2.jpg"
+                "https://via.placeholder.com/900x1300?text=Pagina+2"
 
             ]
+
         }
+
 
     ]
 
@@ -44,69 +68,48 @@ const mangas = [
 
 
 
-
 {
-    nome: "Nova Aventura",
 
-    capa: "imagens/capas/aventura.jpg",
+    id: 2,
+
+    nome: "Outro Mangá",
+
+    autor: "Autor Desconhecido",
+
+    genero: "Fantasia",
+
+
+    capa:
+    "https://via.placeholder.com/300x450?text=Outro+Manga",
+
 
     descricao:
-    "Uma jornada em um mundo fantástico.",
+    "Segundo exemplo de mangá no catálogo.",
 
 
     capitulos: [
 
+
         {
 
-            numero: 1,
+            numero:1,
 
-            paginas: [
+            titulo:"Capítulo inicial",
 
-                "imagens/paginas/aventura/cap1/1.jpg",
+            paginas:[
 
-                "imagens/paginas/aventura/cap1/2.jpg"
+                "https://via.placeholder.com/900x1300?text=Pagina+1",
+
+                "https://via.placeholder.com/900x1300?text=Pagina+2"
 
             ]
 
         }
 
-    ]
-
-},
-
-
-
-
-
-{
-    nome: "Samurai Lendário",
-
-    capa: "imagens/capas/samurai.jpg",
-
-    descricao:
-    "Um samurai busca honra e vingança.",
-
-
-    capitulos: [
-
-        {
-
-            numero: 1,
-
-            paginas: [
-
-                "imagens/paginas/samurai/cap1/1.jpg",
-
-                "imagens/paginas/samurai/cap1/2.jpg"
-
-            ]
-
-        }
 
     ]
 
 }
-
 
 
 ];
