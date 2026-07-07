@@ -1,106 +1,263 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>Animix - Mangá</title>
 
+
 <style>
+
 body {
     margin:0;
     background:#111;
     color:white;
-    font-family:Arial;
+    font-family:Arial, sans-serif;
 }
+
 
 header {
+
     background:#222;
-    text-align:center;
     padding:20px;
+    text-align:center;
+
 }
+
 
 h1 {
+
     color:#ffcc00;
+
 }
 
+
 .container {
-    max-width:800px;
+
+    max-width:900px;
     margin:auto;
     padding:20px;
     text-align:center;
+
 }
+
 
 .capa {
+
     width:220px;
     height:320px;
+    object-fit:cover;
     border-radius:10px;
+
 }
+
+
+.descricao {
+
+    background:#222;
+    padding:15px;
+    border-radius:10px;
+    margin:20px 0;
+
+}
+
 
 .capitulo {
+
     background:#222;
-    margin:10px;
+    margin:10px 0;
     padding:15px;
-    border-radius:8px;
+    border-radius:10px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+
 }
+
+
+button {
+
+    background:#ffcc00;
+    border:none;
+    padding:10px 15px;
+    border-radius:8px;
+    cursor:pointer;
+    font-weight:bold;
+
+}
+
 
 a {
-    color:#111;
-    background:#ffcc00;
-    padding:10px;
-    border-radius:8px;
+
     text-decoration:none;
+
 }
 
+
 .voltar {
+
     display:inline-block;
     margin-top:20px;
+    background:white;
+    color:#111;
+    padding:10px 15px;
+    border-radius:8px;
+
 }
+
+
 </style>
+
 
 </head>
 
+
+
 <body>
 
+
+
 <header>
-<h1>📖 Animix</h1>
+
+<h1>📚 Animix</h1>
+
 </header>
+
+
+
 
 <div class="container">
 
+
+
 <img class="capa" src="https://via.placeholder.com/220x320">
+
 
 <h2>Mangá Exemplo</h2>
 
+
+
+<div class="descricao">
+
 <p>
+
 Uma grande aventura começa aqui.
+
 Leia todos os capítulos no Animix.
+
 </p>
 
-
-<div class="capitulo">
-Capítulo 1
-<br><br>
-<a href="leitor.html?cap=1">Ler agora</a>
 </div>
 
-<div class="capitulo">
-Capítulo 2
-<br><br>
-<a href="leitor.html?cap=2">Ler agora</a>
-</div>
+
+
+
+
+<h2>Capítulos</h2>
+
+
+
 
 <div class="capitulo">
-Capítulo 3
-<br><br>
-<a href="leitor.html?cap=3">Ler agora</a>
-</div>
 
-<a class="voltar" href="index.html">
-Voltar ao catálogo
+<span>Capítulo 1</span>
+
+<a href="leitor.html?cap=1">
+
+<button>
+Ler
+</button>
+
 </a>
 
 </div>
 
+
+
+
+<div class="capitulo">
+
+<span>Capítulo 2</span>
+
+<a href="leitor.html?cap=2">
+
+<button>
+Ler
+</button>
+
+</a>
+
+</div>
+
+
+
+
+<div class="capitulo">
+
+<span>Capítulo 3</span>
+
+<a href="leitor.html?cap=3">
+
+<button>
+Ler
+</button>
+
+</a>
+
+</div>
+
+
+
+
+<div class="capitulo">
+
+<span>Capítulo 4</span>
+
+<a href="leitor.html?cap=4">
+
+<button>
+Ler
+</button>
+
+</a>
+
+</div>
+
+
+
+
+<div class="capitulo">
+
+<span>Capítulo 5</span>
+
+<a href="leitor.html?cap=5">
+
+<button>
+Ler
+</button>
+
+</a>
+
+</div>
+
+
+
+
+<a class="voltar" href="index.html">
+
+⬅ Voltar ao catálogo
+
+</a>
+
+
+
+</div>
+
+
+
 </body>
+
 </html>
