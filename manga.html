@@ -14,6 +14,7 @@
 body{
 
 margin:0;
+padding-bottom:80px;
 background:#111;
 color:white;
 font-family:Arial,sans-serif;
@@ -93,6 +94,7 @@ margin:10px 0;
 border-radius:10px;
 display:flex;
 justify-content:space-between;
+align-items:center;
 
 }
 
@@ -102,6 +104,32 @@ justify-content:space-between;
 
 background:#c00000;
 color:white;
+
+}
+
+
+
+.menu-fixo{
+
+position:fixed;
+bottom:0;
+left:0;
+width:100%;
+background:#222;
+display:flex;
+justify-content:space-around;
+padding:10px 0;
+z-index:999;
+
+}
+
+
+.menu-fixo a{
+
+color:white;
+text-decoration:none;
+text-align:center;
+font-size:14px;
 
 }
 
@@ -119,12 +147,6 @@ margin-top:20px;
 }
 
 
-a{
-
-text-decoration:none;
-
-}
-
 
 </style>
 
@@ -133,6 +155,7 @@ text-decoration:none;
 
 
 <body>
+
 
 
 
@@ -155,28 +178,61 @@ text-decoration:none;
 
 
 
+<div class="menu-fixo">
+
+
+<a href="index.html">
+🏠<br>
+Início
+</a>
+
+
+<a href="favoritos.html">
+⭐<br>
+Favoritos
+</a>
+
+
+<a href="biblioteca.html">
+📚<br>
+Biblioteca
+</a>
+
+
+<a href="perfil.html">
+👤<br>
+Perfil
+</a>
+
+
+</div>
+
+
+
+
+
+
 
 <script src="dados.js"></script>
-
 
 
 <script>
 
 
 
-let url =
+let url=
 
 new URLSearchParams(window.location.search);
 
 
 
-let id =
+let id=
 
 Number(url.get("id"));
 
 
 
-let manga =
+let manga=
 
 mangas[id];
 
@@ -184,23 +240,9 @@ mangas[id];
 
 
 
-let biblioteca =
-
-JSON.parse(
-
-localStorage.getItem("biblioteca")
-
-) || [];
-
-
-
-
-
-
-let conteudo =
+let conteudo=
 
 document.getElementById("conteudo");
-
 
 
 
@@ -210,17 +252,7 @@ if(manga){
 
 
 
-let salvo =
-
-biblioteca.includes(manga.nome);
-
-
-
-
-
-conteudo.innerHTML = `
-
-
+conteudo.innerHTML=`
 
 <img class="capa" src="${manga.capa}">
 
@@ -236,25 +268,10 @@ ${manga.descricao}
 
 
 
-<button onclick="bibliotecaClick()"
-
-id="botaoBiblioteca">
+<h2>Capítulos</h2>
 
 
-</button>
-
-
-
-
-<h2>
-
-Capítulos
-
-</h2>
-
-
-
-<div id="listaCapitulos"></div>
+<div id="capitulos"></div>
 
 
 
@@ -265,23 +282,14 @@ Capítulos
 </a>
 
 
-
 `;
 
 
 
 
+let lista=
 
-atualizarBotao();
-
-
-
-
-
-let lista =
-
-document.getElementById("listaCapitulos");
-
+document.getElementById("capitulos");
 
 
 
@@ -290,8 +298,7 @@ manga.capitulos.forEach(function(cap){
 
 
 
-lista.innerHTML += `
-
+lista.innerHTML +=`
 
 
 <div class="capitulo">
@@ -318,6 +325,7 @@ Capítulo ${cap.numero}
 </a>
 
 
+
 </div>
 
 
@@ -335,132 +343,9 @@ Capítulo ${cap.numero}
 else{
 
 
-conteudo.innerHTML =
+conteudo.innerHTML=
 
 "<h2>Mangá não encontrado</h2>";
-
-
-
-}
-
-
-
-
-
-
-
-function bibliotecaClick(){
-
-
-
-let biblioteca =
-
-JSON.parse(
-
-localStorage.getItem("biblioteca")
-
-) || [];
-
-
-
-
-if(biblioteca.includes(manga.nome)){
-
-
-
-biblioteca =
-
-biblioteca.filter(
-
-item=>item!==manga.nome
-
-);
-
-
-
-}
-
-else{
-
-
-biblioteca.push(manga.nome);
-
-
-}
-
-
-
-
-
-localStorage.setItem(
-
-"biblioteca",
-
-JSON.stringify(biblioteca)
-
-);
-
-
-
-atualizarBotao();
-
-
-
-}
-
-
-
-
-
-
-function atualizarBotao(){
-
-
-
-let biblioteca =
-
-JSON.parse(
-
-localStorage.getItem("biblioteca")
-
-) || [];
-
-
-
-let botao =
-
-document.getElementById("botaoBiblioteca");
-
-
-
-if(biblioteca.includes(manga.nome)){
-
-
-
-botao.innerHTML =
-"❌ Remover da Biblioteca";
-
-
-
-botao.className =
-"remover";
-
-
-}
-
-else{
-
-
-botao.innerHTML =
-"📚 Adicionar à Biblioteca";
-
-
-botao.className = "";
-
-
-
-}
-
 
 
 }
@@ -468,6 +353,7 @@ botao.className = "";
 
 
 </script>
+
 
 
 
