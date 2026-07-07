@@ -1,1 +1,291 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
 
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Animix - Admin</title>
+
+
+<style>
+
+body {
+
+margin:0;
+background:#111;
+color:white;
+font-family:Arial,sans-serif;
+
+}
+
+
+header {
+
+background:#222;
+padding:20px;
+text-align:center;
+
+}
+
+
+h1 {
+
+color:#ffcc00;
+
+}
+
+
+.container {
+
+max-width:600px;
+margin:auto;
+padding:20px;
+
+}
+
+
+input, textarea {
+
+width:100%;
+padding:12px;
+margin:10px 0;
+border-radius:8px;
+border:none;
+
+}
+
+
+button {
+
+background:#ffcc00;
+border:none;
+padding:12px 20px;
+border-radius:8px;
+cursor:pointer;
+font-weight:bold;
+
+}
+
+
+.card {
+
+background:#222;
+padding:15px;
+margin-top:20px;
+border-radius:10px;
+
+}
+
+
+img {
+
+width:120px;
+border-radius:8px;
+
+}
+
+
+</style>
+
+
+</head>
+
+
+
+<body>
+
+
+
+<header>
+
+<h1>⚙️ Painel Animix</h1>
+
+</header>
+
+
+
+
+<div class="container">
+
+
+
+<h2>Novo Mangá</h2>
+
+
+<input id="nome" placeholder="Nome do mangá">
+
+
+<input id="capa" placeholder="Link da capa">
+
+
+<textarea id="descricao" placeholder="Descrição"></textarea>
+
+
+<input id="capitulos" placeholder="Capítulos (ex: 1,2,3)">
+
+
+
+<button onclick="adicionar()">
+
+Adicionar Mangá
+
+</button>
+
+
+
+
+<h2>Mangás cadastrados</h2>
+
+
+<div id="lista"></div>
+
+
+
+</div>
+
+
+
+
+
+
+<script>
+
+
+
+let mangas =
+JSON.parse(localStorage.getItem("mangas")) || [];
+
+
+
+
+
+mostrar();
+
+
+
+
+
+
+function adicionar(){
+
+
+
+let nome =
+document.getElementById("nome").value;
+
+
+let capa =
+document.getElementById("capa").value;
+
+
+let descricao =
+document.getElementById("descricao").value;
+
+
+let capitulos =
+document.getElementById("capitulos")
+.value
+.split(",");
+
+
+
+
+
+mangas.push({
+
+
+nome:nome,
+
+capa:capa,
+
+descricao:descricao,
+
+capitulos:capitulos
+
+
+
+});
+
+
+
+
+
+localStorage.setItem(
+"mangas",
+JSON.stringify(mangas)
+);
+
+
+
+
+mostrar();
+
+
+
+}
+
+
+
+
+
+function mostrar(){
+
+
+
+let lista =
+document.getElementById("lista");
+
+
+
+lista.innerHTML="";
+
+
+
+
+mangas.forEach(function(manga){
+
+
+
+lista.innerHTML += `
+
+
+
+<div class="card">
+
+
+<img src="${manga.capa}">
+
+
+<h3>${manga.nome}</h3>
+
+
+<p>${manga.descricao}</p>
+
+
+
+</div>
+
+
+
+`;
+
+
+
+});
+
+
+
+}
+
+
+
+</script>
+
+
+
+
+</body>
+
+</html>
