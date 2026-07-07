@@ -115,10 +115,20 @@ button {
     background:#ffcc00;
     color:#111;
     border:none;
-    padding:10px 15px;
+    padding:10px;
+    margin:5px;
     border-radius:8px;
     cursor:pointer;
     font-weight:bold;
+
+}
+
+
+
+.favorito {
+
+    background:#444;
+    color:white;
 
 }
 
@@ -140,7 +150,6 @@ a {
 <body>
 
 
-
 <header>
 
 
@@ -148,6 +157,7 @@ a {
 
 
 <p>Leia seus mangás favoritos</p>
+
 
 
 <input 
@@ -162,21 +172,19 @@ onkeyup="buscar()"
 
 
 
+
 <div class="menu">
 
+
 <a href="index.html">
-Início
+🏠 Início
 </a>
 
 
-<a href="#">
-Mangás
+<a href="favoritos.html">
+⭐ Favoritos
 </a>
 
-
-<a href="#">
-Favoritos
-</a>
 
 
 </div>
@@ -185,6 +193,7 @@ Favoritos
 
 
 <div class="catalogo" id="catalogo">
+
 
 
 
@@ -210,13 +219,28 @@ Aventura e ação
 <a href="manga.html">
 
 <button>
-Ver mangá
+📖 Ver mangá
 </button>
 
 </a>
 
 
+
+<button 
+class="favorito"
+onclick="favoritar(
+'Mangá Exemplo',
+'https://via.placeholder.com/180x260',
+'manga.html',
+this
+)">
+⭐ Favoritar
+</button>
+
+
+
 </div>
+
 
 
 
@@ -244,13 +268,28 @@ Fantasia e mistério
 <a href="aventura.html">
 
 <button>
-Ver mangá
+📖 Ver mangá
 </button>
 
 </a>
 
 
+
+<button 
+class="favorito"
+onclick="favoritar(
+'Nova Aventura',
+'https://via.placeholder.com/180x260',
+'aventura.html',
+this
+)">
+⭐ Favoritar
+</button>
+
+
+
 </div>
+
 
 
 
@@ -278,18 +317,35 @@ Batalhas épicas
 <a href="samurai.html">
 
 <button>
-Ver mangá
+📖 Ver mangá
 </button>
 
 </a>
 
 
+
+<button 
+class="favorito"
+onclick="favoritar(
+'Samurai Lendário',
+'https://via.placeholder.com/180x260',
+'samurai.html',
+this
+)">
+⭐ Favoritar
+</button>
+
+
+
 </div>
 
 
 
 
+
 </div>
+
+
 
 
 
@@ -298,26 +354,30 @@ Ver mangá
 <script>
 
 
+
 function buscar(){
 
 
-let texto = document
+let texto =
+document
 .getElementById("pesquisa")
 .value
 .toLowerCase();
 
 
 
-let cards = document
+let cards =
+document
 .getElementsByClassName("card");
 
 
 
-for(let i = 0; i < cards.length; i++){
+for(let i=0;i<cards.length;i++){
 
 
-let nome = cards[i]
-.getElementsByTagName("h3")[0]
+let nome =
+cards[i]
+.querySelector("h3")
 .innerHTML
 .toLowerCase();
 
@@ -344,11 +404,78 @@ cards[i].style.display="none";
 }
 
 
+
+
+
+
+
+function favoritar(nome,capa,link,botao){
+
+
+
+let favoritos =
+JSON.parse(localStorage.getItem("favoritos")) || [];
+
+
+
+let existe =
+favoritos.find(
+item=>item.nome===nome
+);
+
+
+
+if(existe){
+
+
+favoritos =
+favoritos.filter(
+item=>item.nome!==nome
+);
+
+
+botao.innerHTML="⭐ Favoritar";
+
+
+}
+
+else{
+
+
+favoritos.push({
+
+nome:nome,
+capa:capa,
+link:link
+
+});
+
+
+botao.innerHTML="❌ Remover";
+
+
+
+}
+
+
+
+localStorage.setItem(
+"favoritos",
+JSON.stringify(favoritos)
+);
+
+
+
+}
+
+
+
+
 </script>
 
 
 
-</body>
 
+</body>
 
 </html>
