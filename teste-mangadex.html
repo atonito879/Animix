@@ -1,1 +1,192 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
 
+<head>
+
+<meta charset="UTF-8">
+
+<title>Teste MangaDex</title>
+
+<style>
+
+body{
+font-family:Arial;
+padding:20px;
+}
+
+input,button{
+padding:10px;
+font-size:16px;
+}
+
+.card{
+border:1px solid #ccc;
+padding:15px;
+margin-top:15px;
+}
+
+img{
+width:120px;
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<h1>🔎 Teste MangaDex</h1>
+
+
+<input 
+id="busca"
+placeholder="Digite o nome do mangá"
+>
+
+
+<button onclick="pesquisar()">
+
+Buscar
+
+</button>
+
+
+
+<div id="resultado">
+
+</div>
+
+
+
+
+
+<script src="js/mangadex.js"></script>
+
+
+
+<script>
+
+
+async function pesquisar(){
+
+
+
+let nome =
+
+document.getElementById(
+
+"busca"
+
+).value;
+
+
+
+
+let area =
+
+document.getElementById(
+
+"resultado"
+
+);
+
+
+
+area.innerHTML =
+
+"Buscando...";
+
+
+
+
+let mangas =
+
+await buscarMangaDex(nome);
+
+
+
+
+area.innerHTML="";
+
+
+
+
+
+for(let manga of mangas){
+
+
+
+let dados =
+
+dadosMangaDex(manga);
+
+
+
+let capa =
+
+await pegarCapaMangaDex(manga);
+
+
+
+
+
+area.innerHTML +=
+
+
+
+`
+
+<div class="card">
+
+
+<img src="${capa}">
+
+
+<h2>
+
+${dados.nome}
+
+</h2>
+
+
+<p>
+
+${dados.descricao.substring(0,200)}
+
+</p>
+
+
+
+<p>
+
+Gêneros:
+
+${dados.generos.join(", ")}
+
+</p>
+
+
+
+</div>
+
+
+`;
+
+
+
+}
+
+
+
+}
+
+
+
+</script>
+
+
+</body>
+
+</html>
