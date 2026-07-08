@@ -82,7 +82,7 @@ try{
 
 let resposta = await fetch(
 
-"https://api.mangadex.org/cover?manga[]="
+"/api/cover?id="
 
 +
 
