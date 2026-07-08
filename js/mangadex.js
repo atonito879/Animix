@@ -1,68 +1,50 @@
 /* =====================================
    ANIMIX
-   MANGADEX API VIA VERCEL FUNCTION
+   MANGADEX INTEGRATION
+   VIA VERCEL FUNCTIONS
 ===================================== */
 
 
-const MANGADEX_API = "/api/mangadex";
-
-
-
-
-
 // ===============================
-// BUSCAR MANGÁ
+// BUSCAR MANGÁS
 // ===============================
 
-async function buscarMangaDex(titulo){
+async function buscarMangaDex(titulo) {
 
 
-try{
+    try {
 
 
-let resposta = await fetch(
+        let resposta = await fetch(
 
-MANGADEX_API +
+            "/api/mangadex?title=" +
+            encodeURIComponent(titulo)
 
-"?title=" +
-
-encodeURIComponent(titulo)
-
-);
+        );
 
 
-
-let dados = await resposta.json();
-
+        let dados = await resposta.json();
 
 
-return dados.data || [];
+        return dados.data || [];
 
 
-
-}
-
-catch(erro){
+    } catch (erro) {
 
 
-console.error(
-
-"Erro MangaDex:",
-
-erro
-
-);
+        console.error(
+            "Erro ao buscar MangaDex:",
+            erro
+        );
 
 
+        return [];
 
-return [];
+
+    }
 
 
 }
-
-
-}
-
 
 
 
@@ -70,85 +52,73 @@ return [];
 
 
 // ===============================
-// PEGAR CAPA
+// PEGAR CAPA DO MANGÁ
 // ===============================
 
-async function pegarCapaMangaDex(manga){
+async function pegarCapaMangaDex(manga) {
+
+
+    try {
+
+
+        let resposta = await fetch(
+
+            "/api/cover?id=" +
+            manga.id
+
+        );
+
+
+        let dados = await resposta.json();
 
 
 
-try{
+        if (
+            dados.data &&
+            dados.data.length > 0
+        ) {
 
 
-let resposta = await fetch(
+            let arquivo =
 
-"/api/cover?id="
-
-+
-
-manga.id
-
-);
-
-
-
-let dados = await resposta.json();
+                dados.data[0]
+                .attributes
+                .fileName;
 
 
 
-if(dados.data.length){
+            return (
+
+                "https://uploads.mangadex.org/covers/" +
+
+                manga.id +
+
+                "/" +
+
+                arquivo
+
+            );
 
 
-let arquivo =
-
-dados.data[0]
-
-.attributes
-
-.fileName;
+        }
 
 
-
-return (
-
-"https://uploads.mangadex.org/covers/"
-
-+
-
-manga.id
-
-+
-
-"/"
-
-+
-
-arquivo
-
-);
+        return "";
 
 
-
-}
-
+    } catch (erro) {
 
 
-return "";
+        console.error(
+            "Erro ao pegar capa:",
+            erro
+        );
 
 
-
-}
-
-catch(erro){
+        return "";
 
 
-console.log(erro);
-
-
-return "";
-
-
-}
+    }
 
 
 }
@@ -160,62 +130,80 @@ return "";
 
 
 // ===============================
-// DADOS DO MANGÁ
+// ORGANIZAR DADOS DO MANGÁ
 // ===============================
 
-function dadosMangaDex(manga){
+function dadosMangaDex(manga) {
+
+
+    let titulo =
+
+        manga.attributes.title;
 
 
 
-let titulo =
+    let nome =
 
-manga.attributes.title;
+        titulo.en ||
 
+        titulo["pt-br"] ||
 
-
-let nome =
-
-titulo.en ||
-
-Object.values(titulo)[0];
+        Object.values(titulo)[0];
 
 
 
-let descricao =
 
-manga.attributes.description || {};
+    let descricao =
 
-
-
-return {
+        manga.attributes.description || {};
 
 
-idDex:manga.id,
 
 
-nome:nome,
+    let generos =
+
+        manga.attributes.tags
+
+        .filter(
+
+            tag =>
+
+            tag.attributes.group === "genre"
+
+        )
+
+        .map(
+
+            tag =>
+
+            tag.attributes.name.en
+
+        );
 
 
-descricao:
-
-descricao.en || "",
 
 
-generos:
-
-manga.attributes.tags
-
-.map(
-
-tag =>
-
-tag.attributes.name.en
-
-)
+    return {
 
 
-};
+        idDex: manga.id,
 
+
+        nome: nome,
+
+
+        descricao:
+
+            descricao.en ||
+
+            "",
+
+
+
+        generos: generos
+
+
+    };
 
 
 }
@@ -225,35 +213,49 @@ tag.attributes.name.en
 
 
 
+
 // ===============================
-// CAPÍTULOS
+// BUSCAR CAPÍTULOS
 // ===============================
 
+async function buscarCapitulosDex(id) {
 
-async function buscarCapitulosDex(id){
+
+    try {
 
 
-let resposta = await fetch(
+        let resposta = await fetch(
 
-"https://api.mangadex.org/chapter?manga="
+            "/api/chapters?id=" +
+            id
 
-+
+        );
 
-id
 
-+
-
-"&translatedLanguage[]=pt-br&order[chapter]=asc"
-
-);
+        let dados = await resposta.json();
 
 
 
-let dados = await resposta.json();
+        return dados.data || [];
 
 
 
-return dados.data || [];
+    } catch (erro) {
+
+
+        console.error(
+
+            "Erro capítulos:",
+
+            erro
+
+        );
+
+
+        return [];
+
+
+    }
 
 
 }
