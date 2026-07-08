@@ -1,13 +1,14 @@
 /* =====================================
    ANIMIX
-   MANGADEX INTEGRATION
+   MANGADEX API
    VIA VERCEL FUNCTIONS
 ===================================== */
 
 
-// ===============================
+
+// =====================================
 // BUSCAR MANGÁS
-// ===============================
+// =====================================
 
 async function buscarMangaDex(titulo) {
 
@@ -33,7 +34,7 @@ async function buscarMangaDex(titulo) {
 
 
         console.error(
-            "Erro ao buscar MangaDex:",
+            "Erro ao buscar mangá:",
             erro
         );
 
@@ -43,7 +44,6 @@ async function buscarMangaDex(titulo) {
 
     }
 
-
 }
 
 
@@ -51,9 +51,10 @@ async function buscarMangaDex(titulo) {
 
 
 
-// ===============================
+
+// =====================================
 // PEGAR CAPA DO MANGÁ
-// ===============================
+// =====================================
 
 async function pegarCapaMangaDex(manga) {
 
@@ -74,49 +75,97 @@ async function pegarCapaMangaDex(manga) {
 
 
         if (
-            dados.data &&
-            dados.data.length > 0
+            !dados.data ||
+            dados.data.length === 0
         ) {
 
 
-            let arquivo =
+            return "";
 
-                dados.data[0]
-                .attributes
-                .fileName;
+        }
 
 
 
-            return (
 
-                "https://uploads.mangadex.org/covers/" +
 
-                manga.id +
+        // procura capa em inglês
+        let capa = dados.data.find(
 
-                "/" +
+            item =>
 
-                arquivo
+            item.attributes.locale === "en"
 
-            );
+        );
+
+
+
+
+
+        // se não encontrar usa a primeira
+        if (!capa) {
+
+
+            capa = dados.data[0];
 
 
         }
 
 
-        return "";
+
+
+
+        let arquivo =
+
+            capa.attributes.fileName;
+
+
+
+
+
+        let url =
+
+
+        "https://uploads.mangadex.org/covers/" +
+
+        manga.id +
+
+        "/" +
+
+        arquivo;
+
+
+
+
+
+        console.log(
+
+            "Capa:",
+            url
+
+        );
+
+
+
+
+
+        return url;
+
 
 
     } catch (erro) {
 
 
+
         console.error(
-            "Erro ao pegar capa:",
+
+            "Erro ao buscar capa:",
             erro
+
         );
 
 
-        return "";
 
+        return "";
 
     }
 
@@ -129,16 +178,20 @@ async function pegarCapaMangaDex(manga) {
 
 
 
-// ===============================
+
+// =====================================
 // ORGANIZAR DADOS DO MANGÁ
-// ===============================
+// =====================================
 
 function dadosMangaDex(manga) {
+
 
 
     let titulo =
 
         manga.attributes.title;
+
+
 
 
 
@@ -148,7 +201,12 @@ function dadosMangaDex(manga) {
 
         titulo["pt-br"] ||
 
+        titulo.ja ||
+
         Object.values(titulo)[0];
+
+
+
 
 
 
@@ -160,7 +218,12 @@ function dadosMangaDex(manga) {
 
 
 
+
+
+
+
     let generos =
+
 
         manga.attributes.tags
 
@@ -171,6 +234,7 @@ function dadosMangaDex(manga) {
             tag.attributes.group === "genre"
 
         )
+
 
         .map(
 
@@ -183,24 +247,33 @@ function dadosMangaDex(manga) {
 
 
 
+
+
+
     return {
 
 
-        idDex: manga.id,
+        idDex:
+
+        manga.id,
 
 
-        nome: nome,
+
+        nome:
+
+        nome,
+
 
 
         descricao:
 
-            descricao.en ||
-
-            "",
+        descricao.en || "",
 
 
 
-        generos: generos
+        generos:
+
+        generos
 
 
     };
@@ -214,9 +287,10 @@ function dadosMangaDex(manga) {
 
 
 
-// ===============================
+
+// =====================================
 // BUSCAR CAPÍTULOS
-// ===============================
+// =====================================
 
 async function buscarCapitulosDex(id) {
 
@@ -232,6 +306,7 @@ async function buscarCapitulosDex(id) {
         );
 
 
+
         let dados = await resposta.json();
 
 
@@ -243,6 +318,7 @@ async function buscarCapitulosDex(id) {
     } catch (erro) {
 
 
+
         console.error(
 
             "Erro capítulos:",
@@ -250,6 +326,7 @@ async function buscarCapitulosDex(id) {
             erro
 
         );
+
 
 
         return [];
