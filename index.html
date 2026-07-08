@@ -149,7 +149,9 @@ Admin
 <script>
 
 
-let lista = mangas;
+let lista = mangas.concat(
+JSON.parse(localStorage.getItem("mangasAdmin")) || []
+);
 
 
 
