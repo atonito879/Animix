@@ -23,182 +23,94 @@ font-size:16px;
 border:1px solid #ccc;
 padding:15px;
 margin-top:15px;
+display:flex;
+gap:20px;
+align-items:flex-start;
 }
 
 img{
 width:120px;
+height:170px;
+object-fit:cover;
 }
 
 </style>
 
 </head>
 
-
 <body>
-
 
 <h1>🔎 Teste MangaDex</h1>
 
-
-<input 
+<input
 id="busca"
 placeholder="Digite o nome do mangá"
 >
 
-
 <button onclick="pesquisar()">
-
 Buscar
-
 </button>
 
-
-
-<div id="resultado">
-
-</div>
-
-
-
-
+<div id="resultado"></div>
 
 <script src="js/mangadex.js"></script>
 
-
-
 <script>
-
 
 async function pesquisar(){
 
+    const nome = document.getElementById("busca").value.trim();
 
+    const area = document.getElementById("resultado");
 
-let nome =
+    if(!nome){
+        area.innerHTML = "Digite um título.";
+        return;
+    }
 
-document.getElementById(
+    area.innerHTML = "Buscando...";
 
-"busca"
+    const mangas = await buscarMangaDex(nome);
 
-).value;
+    area.innerHTML = "";
 
+    if(mangas.length === 0){
+        area.innerHTML = "Nenhum mangá encontrado.";
+        return;
+    }
 
+    for(const manga of mangas){
 
+        const dados = dadosMangaDex(manga);
 
-let area =
+        const capa = pegarCapaMangaDex(manga);
 
-document.getElementById(
+        area.innerHTML += `
+        <div class="card">
 
-"resultado"
+            <img
+                src="${capa}"
+                onerror="this.src='img/sem-capa.jpg'"
+            >
 
-);
+            <div>
 
+                <h2>${dados.nome}</h2>
 
+                <p>${dados.descricao.substring(0,200)}</p>
 
-area.innerHTML =
+                <p><strong>Gêneros:</strong> ${dados.generos.join(", ")}</p>
 
-"Buscando...";
+            </div>
 
+        </div>
+        `;
 
-
-
-let mangas = await buscarMangaDex(nome);
-
-console.log("PRIMEIRO MANGÁ COMPLETO:");
-console.log(mangas[0]);
-
-console.log("RELACIONAMENTOS:");
-console.log(mangas[0].relationships);
-
-console.log(mangas);
-
-area.innerHTML="";
-
-
-if(mangas.length == 0){
-
-area.innerHTML = "Nenhum mangá encontrado";
-
-return;
+    }
 
 }
-
-
-
-
-for(let manga of mangas){
-
-
-
-let dados =
-
-dadosMangaDex(manga);
-
-
-
-let capa =
-
-await pegarCapaMangaDex(manga);
-
-
-
-
-
-area.innerHTML +=
-
-`
-
-<div class="card">
-
-
-<img 
-src="${capa}" 
-style="width:120px;height:170px;object-fit:cover;"
-onerror="console.log('Erro imagem:', this.src)"
->
-
-
-<h2>
-
-${dados.nome}
-
-</h2>
-
-
-<p>
-
-${dados.descricao.substring(0,200)}
-
-</p>
-
-
-
-<p>
-
-Gêneros:
-
-${dados.generos.join(", ")}
-
-</p>
-
-
-
-</div>
-
-
-`;
-
-
-
-}
-
-
-
-}
-
-
 
 </script>
-
 
 </body>
 
