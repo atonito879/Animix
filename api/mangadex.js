@@ -10,13 +10,12 @@ export default async function handler(req, res) {
 
     try {
 
-        const url =
-            "https://api.mangadex.org/manga"
-            + "?title=" + encodeURIComponent(titulo)
-            + "&limit=10"
-            + "&includes[]=cover_art";
-
-        const resposta = await fetch(url);
+        const resposta = await fetch(
+            "https://api.mangadex.org/manga?title=" +
+            encodeURIComponent(titulo) +
+            "&limit=10" +
+            "&includes[]=cover_art"
+        );
 
         const dados = await resposta.json();
 
@@ -25,8 +24,6 @@ export default async function handler(req, res) {
         res.status(200).json(dados);
 
     } catch (erro) {
-
-        console.log(erro);
 
         res.status(500).json({
             erro: "Erro MangaDex"
