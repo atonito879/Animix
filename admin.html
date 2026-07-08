@@ -24,12 +24,62 @@
 
 </div>
 
+
+<a href="index.html">
+
+<button>
+
+🏠 Início
+
+</button>
+
+</a>
+
+
 </header>
 
 
 
 
-<div class="admin-container">
+
+<div id="loginAdmin" class="formulario">
+
+
+<h2 class="titulo">
+
+🔐 Acesso Admin
+
+</h2>
+
+
+<input 
+type="password"
+id="senhaAdmin"
+placeholder="Senha do administrador"
+>
+
+
+
+<button onclick="entrarAdmin()">
+
+Entrar
+
+</button>
+
+
+
+</div>
+
+
+
+
+
+
+
+
+<div id="painelAdmin" class="admin-container" style="display:none;">
+
+
 
 
 
@@ -38,26 +88,45 @@
 
 <h2>
 
-➕ Novo Mangá
+➕ Cadastrar Mangá
 
 </h2>
 
 
 
-<input id="nome" placeholder="Nome do mangá">
-
-
-<input id="autor" placeholder="Autor">
-
-
-<input id="genero" placeholder="Gênero">
-
-
-<input id="capa" placeholder="URL da capa">
+<input 
+id="nome"
+placeholder="Nome do mangá"
+>
 
 
 
-<textarea id="descricao" placeholder="Descrição"></textarea>
+<input 
+id="autor"
+placeholder="Autor"
+>
+
+
+
+<input 
+id="genero"
+placeholder="Gênero"
+>
+
+
+
+<input 
+id="capa"
+placeholder="URL da capa"
+>
+
+
+
+<textarea 
+id="descricao"
+placeholder="Descrição do mangá">
+</textarea>
+
 
 
 
@@ -66,6 +135,7 @@
 Salvar Mangá
 
 </button>
+
 
 
 </div>
@@ -81,26 +151,33 @@ Salvar Mangá
 
 <h2>
 
-📖 Adicionar Capítulo
+📖 Novo Capítulo
 
 </h2>
 
 
 
-<select id="listaMangas">
+
+<select id="selecionarManga">
 
 </select>
 
 
 
-<input id="numeroCap" placeholder="Número do capítulo">
+
+<input 
+id="numeroCapitulo"
+placeholder="Número do capítulo"
+>
 
 
-<textarea id="paginas"
 
+
+<textarea 
+id="paginasCapitulo"
 placeholder="Cole as URLs das páginas separadas por vírgula">
-
 </textarea>
+
 
 
 
@@ -119,7 +196,6 @@ Adicionar Capítulo
 
 
 
-
 <div class="admin-box">
 
 
@@ -131,7 +207,7 @@ Adicionar Capítulo
 
 
 
-<div id="lista">
+<div id="listaMangas">
 
 </div>
 
@@ -142,9 +218,6 @@ Adicionar Capítulo
 
 
 </div>
-
-
-
 
 
 
@@ -153,17 +226,103 @@ Adicionar Capítulo
 <script src="js/dados.js"></script>
 
 <script src="js/app.js"></script>
-
-
-
-
-
-
 <script>
 
 
+const SENHA_ADMIN = "admin123";
 
-let cadastrados =
+
+
+function entrarAdmin(){
+
+
+let senha =
+
+document.getElementById(
+"senhaAdmin"
+).value;
+
+
+
+
+if(senha === SENHA_ADMIN){
+
+
+localStorage.setItem(
+"adminLogado",
+"true"
+);
+
+
+
+mostrarPainel();
+
+
+
+}
+
+else{
+
+
+alert(
+"Senha incorreta!"
+);
+
+
+}
+
+
+}
+
+
+
+
+
+
+function mostrarPainel(){
+
+
+
+document.getElementById(
+
+"loginAdmin"
+
+).style.display="none";
+
+
+
+document.getElementById(
+
+"painelAdmin"
+
+).style.display="block";
+
+
+
+carregarMangas();
+
+
+}
+
+
+
+
+
+if(localStorage.getItem("adminLogado")){
+
+
+mostrarPainel();
+
+
+}
+
+
+
+
+
+
+
+let listaAdmin =
 
 JSON.parse(
 
@@ -176,19 +335,23 @@ localStorage.getItem("mangasAdmin")
 
 
 
-function salvar(){
+function salvarDados(){
+
 
 
 localStorage.setItem(
 
 "mangasAdmin",
 
-JSON.stringify(cadastrados)
+JSON.stringify(listaAdmin)
 
 );
 
 
+
 }
+
+
 
 
 
@@ -198,63 +361,77 @@ function adicionarManga(){
 
 
 
-let manga = {
+let novo = {
 
 
-id:
-
-Date.now(),
+id: Date.now(),
 
 
 nome:
 
-nome.value,
+document.getElementById(
+"nome"
+).value,
 
 
 autor:
 
-autor.value,
+document.getElementById(
+"autor"
+).value,
 
 
 genero:
 
-genero.value,
+document.getElementById(
+"genero"
+).value,
 
 
 capa:
 
-capa.value,
+document.getElementById(
+"capa"
+).value,
 
 
 descricao:
 
-descricao.value,
+document.getElementById(
+"descricao"
+).value,
 
 
 capitulos:[]
+
+
 
 };
 
 
 
 
-cadastrados.push(manga);
+
+listaAdmin.push(novo);
 
 
 
-salvar();
+salvarDados();
 
 
 
 alert(
-
 "Mangá cadastrado!"
-
 );
 
 
 
-location.reload();
+limparCampos();
+
+
+
+carregarMangas();
+
 
 
 }
@@ -265,36 +442,38 @@ location.reload();
 
 
 
-
-function carregar(){
+function carregarMangas(){
 
 
 
 let select =
 
 document.getElementById(
-
-"listaMangas"
-
+"selecionarManga"
 );
-
 
 
 
 let lista =
 
 document.getElementById(
-
-"lista"
-
+"listaMangas"
 );
 
 
 
 
+select.innerHTML="";
+
+lista.innerHTML="";
 
 
-cadastrados.forEach(function(m){
+
+
+
+listaAdmin.forEach(function(manga){
+
+
 
 
 
@@ -303,14 +482,17 @@ select.innerHTML +=
 
 `
 
-<option value="${m.id}">
+<option value="${manga.id}">
 
-${m.nome}
+${manga.nome}
 
 </option>
 
 
 `;
+
+
+
 
 
 
@@ -323,25 +505,26 @@ lista.innerHTML +=
 <div class="admin-item">
 
 
-<b>
+<h3>
 
-${m.nome}
+${manga.nome}
 
-</b>
+</h3>
 
 
-<br>
 
+<p>
 
 Capítulos:
+${manga.capitulos.length}
 
-${m.capitulos.length}
+</p>
 
 
 
-<button onclick="remover(${m.id})">
+<button onclick="excluirManga(${manga.id})">
 
-Excluir
+🗑 Excluir
 
 </button>
 
@@ -354,6 +537,7 @@ Excluir
 
 
 
+
 });
 
 
@@ -365,7 +549,57 @@ Excluir
 
 
 
+function limparCampos(){
 
+
+
+nome.value="";
+
+autor.value="";
+
+genero.value="";
+
+capa.value="";
+
+descricao.value="";
+
+
+}
+
+
+
+
+
+
+
+function excluirManga(id){
+
+
+
+if(confirm("Excluir este mangá?")){
+
+
+listaAdmin =
+
+listaAdmin.filter(
+
+m=>m.id != id
+
+);
+
+
+
+salvarDados();
+
+
+carregarMangas();
+
+
+}
+
+
+
+}
 function adicionarCapitulo(){
 
 
@@ -374,16 +608,21 @@ let id =
 
 Number(
 
-listaMangas.value
+document.getElementById(
+
+"selecionarManga"
+
+).value
 
 );
 
 
 
 
+
 let manga =
 
-cadastrados.find(
+listaAdmin.find(
 
 m =>
 
@@ -395,13 +634,32 @@ m.id === id
 
 
 
+
+if(!manga){
+
+
+alert(
+
+"Selecione um mangá"
+
+);
+
+
+return;
+
+
+}
+
+
+
+
+
+
 let paginas =
 
-document
+document.getElementById(
 
-.getElementById(
-
-"paginas"
+"paginasCapitulo"
 
 )
 
@@ -411,7 +669,13 @@ document
 
 .map(
 
-p=>p.trim()
+p => p.trim()
+
+)
+
+.filter(
+
+p => p !== ""
 
 );
 
@@ -419,31 +683,57 @@ p=>p.trim()
 
 
 
-manga.capitulos.push({
 
+
+let capitulo = {
 
 
 numero:
 
-Number(numeroCap.value),
+Number(
+
+document.getElementById(
+
+"numeroCapitulo"
+
+).value
+
+),
+
 
 
 titulo:
 
-"Capítulo "+numeroCap.value,
+"Capítulo " +
+
+document.getElementById(
+
+"numeroCapitulo"
+
+).value,
+
 
 
 paginas:paginas
 
 
 
-});
+};
 
 
 
 
 
-salvar();
+
+manga.capitulos.push(
+
+capitulo
+
+);
+
+
+
+salvarDados();
 
 
 
@@ -455,7 +745,23 @@ alert(
 
 
 
-location.reload();
+document.getElementById(
+
+"numeroCapitulo"
+
+).value="";
+
+
+
+document.getElementById(
+
+"paginasCapitulo"
+
+).value="";
+
+
+
+carregarMangas();
 
 
 
@@ -467,39 +773,29 @@ location.reload();
 
 
 
-
-function remover(id){
-
+function sairAdmin(){
 
 
-cadastrados =
 
-cadastrados.filter(
+localStorage.removeItem(
 
-m=>m.id!==id
+"adminLogado"
 
 );
 
 
 
-salvar();
-
-
-
 location.reload();
+
 
 
 }
 
 
 
-
-
-carregar();
-
-
-
 </script>
+
+
 
 
 
