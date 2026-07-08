@@ -131,9 +131,9 @@ parametros.get("id")
 
 
 
-let manga =
-
-mangas.find(
+let todosMangas = mangas.concat(
+JSON.parse(localStorage.getItem("mangasAdmin")) || []
+);
 
 item =>
 
