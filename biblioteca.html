@@ -6,150 +6,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Animix - Mangá</title>
+<title>Animix - Biblioteca</title>
 
-
-<style>
-
-body{
-
-margin:0;
-padding-bottom:80px;
-background:#111;
-color:white;
-font-family:Arial,sans-serif;
-
-}
-
-
-header{
-
-background:#222;
-padding:20px;
-text-align:center;
-
-}
-
-
-h1{
-
-color:#ffcc00;
-
-}
-
-
-
-.container{
-
-max-width:900px;
-margin:auto;
-padding:20px;
-text-align:center;
-
-}
-
-
-
-.capa{
-
-width:220px;
-height:320px;
-object-fit:cover;
-border-radius:10px;
-
-}
-
-
-
-.descricao{
-
-background:#222;
-padding:15px;
-border-radius:10px;
-margin:20px 0;
-
-}
-
-
-
-button{
-
-background:#ffcc00;
-color:#111;
-border:none;
-padding:10px 15px;
-border-radius:8px;
-cursor:pointer;
-font-weight:bold;
-
-}
-
-
-
-.capitulo{
-
-background:#222;
-padding:15px;
-margin:10px 0;
-border-radius:10px;
-display:flex;
-justify-content:space-between;
-align-items:center;
-
-}
-
-
-
-.remover{
-
-background:#c00000;
-color:white;
-
-}
-
-
-
-.menu-fixo{
-
-position:fixed;
-bottom:0;
-left:0;
-width:100%;
-background:#222;
-display:flex;
-justify-content:space-around;
-padding:10px 0;
-z-index:999;
-
-}
-
-
-.menu-fixo a{
-
-color:white;
-text-decoration:none;
-text-align:center;
-font-size:14px;
-
-}
-
-
-
-.voltar{
-
-display:inline-block;
-background:white;
-color:#111;
-padding:10px;
-border-radius:8px;
-margin-top:20px;
-
-}
-
-
-
-</style>
-
+<link rel="stylesheet" href="css/style.css">
 
 </head>
 
@@ -157,11 +16,13 @@ margin-top:20px;
 <body>
 
 
-
-
 <header>
 
-<h1>📖 Animix</h1>
+<div class="logo">
+
+📚 Biblioteca
+
+</div>
 
 </header>
 
@@ -169,7 +30,13 @@ margin-top:20px;
 
 
 
-<div class="container" id="conteudo">
+<div class="container">
+
+
+<div id="lista" class="catalogo">
+
+
+</div>
 
 
 </div>
@@ -178,34 +45,56 @@ margin-top:20px;
 
 
 
-<div class="menu-fixo">
+
+<nav class="menu-fixo">
 
 
-<a href="index.html">
-🏠<br>
+<a class="menu-item" href="index.html">
+
+<span>🏠</span>
+
 Início
+
 </a>
 
 
-<a href="favoritos.html">
-⭐<br>
+<a class="menu-item" href="favoritos.html">
+
+<span>⭐</span>
+
 Favoritos
+
 </a>
 
 
-<a href="biblioteca.html">
-📚<br>
+<a class="menu-item" href="biblioteca.html">
+
+<span>📚</span>
+
 Biblioteca
+
 </a>
 
 
-<a href="perfil.html">
-👤<br>
+<a class="menu-item" href="perfil.html">
+
+<span>👤</span>
+
 Perfil
+
 </a>
 
 
-</div>
+<a class="menu-item" href="admin.html">
+
+<span>⚙️</span>
+
+Admin
+
+</a>
+
+
+</nav>
 
 
 
@@ -213,37 +102,62 @@ Perfil
 
 
 
-<script src="dados.js"></script>
+<script src="js/dados.js"></script>
+
+<script src="js/app.js"></script>
+
+
 
 
 <script>
 
 
 
-let url=
+let todos = mangas.concat(
 
-new URLSearchParams(window.location.search);
+JSON.parse(
 
+localStorage.getItem("mangasAdmin")
 
+) || []
 
-let id=
-
-Number(url.get("id"));
-
-
-
-let manga=
-
-mangas[id];
+);
 
 
 
 
 
-let conteudo=
+let biblioteca =
 
-document.getElementById("conteudo");
+pegarBiblioteca();
 
+
+
+
+
+let area =
+
+document.getElementById(
+
+"lista"
+
+);
+
+
+
+
+
+biblioteca.forEach(function(id){
+
+
+
+let manga =
+
+todos.find(
+
+m=>m.id==id
+
+);
 
 
 
@@ -252,107 +166,49 @@ if(manga){
 
 
 
-conteudo.innerHTML=`
+area.innerHTML +=
 
-<img class="capa" src="${manga.capa}">
-
-
-<h2>${manga.nome}</h2>
-
-
-<div class="descricao">
-
-${manga.descricao}
-
-</div>
+criarCard(manga);
 
 
 
-<h2>Capítulos</h2>
-
-
-<div id="capitulos"></div>
-
-
-
-<a class="voltar" href="index.html">
-
-🏠 Início
-
-</a>
-
-
-`;
-
-
-
-
-let lista=
-
-document.getElementById("capitulos");
-
-
-
-
-manga.capitulos.forEach(function(cap){
-
-
-
-lista.innerHTML +=`
-
-
-<div class="capitulo">
-
-
-<span>
-
-Capítulo ${cap.numero}
-
-</span>
-
-
-
-<a href="leitor.html?id=${id}&cap=${cap.numero}">
-
-
-<button>
-
-📖 Ler
-
-</button>
-
-
-</a>
-
-
-
-</div>
-
-
-
-`;
-
+}
 
 
 });
 
 
 
+
+
+
+if(area.innerHTML==""){
+
+
+
+area.innerHTML =
+
+
+`
+
+<div class="lista-vazia">
+
+Sua biblioteca está vazia 📚
+
+</div>
+
+
+`;
+
+
+
 }
 
-else{
-
-
-conteudo.innerHTML=
-
-"<h2>Mangá não encontrado</h2>";
-
-
-}
 
 
 
 </script>
+
 
 
 
