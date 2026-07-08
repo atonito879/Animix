@@ -141,8 +141,6 @@ await pegarCapaMangaDex(manga);
 
 area.innerHTML +=
 
-
-
 `
 
 <div class="card">
@@ -150,7 +148,8 @@ area.innerHTML +=
 
 <img 
 src="${capa}" 
-onerror="this.src='img/sem-capa.png'"
+style="width:120px;height:170px;object-fit:cover;"
+onerror="console.log('Erro imagem:', this.src)"
 >
 
 
