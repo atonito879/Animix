@@ -8,90 +8,7 @@
 
 <title>Animix - Perfil</title>
 
-
-<style>
-
-body{
-
-margin:0;
-background:#111;
-color:white;
-font-family:Arial,sans-serif;
-
-}
-
-
-header{
-
-background:#222;
-padding:20px;
-text-align:center;
-
-}
-
-
-h1{
-
-color:#ffcc00;
-
-}
-
-
-.container{
-
-max-width:500px;
-margin:auto;
-padding:20px;
-
-}
-
-
-
-.card{
-
-background:#222;
-padding:20px;
-border-radius:12px;
-margin-top:20px;
-text-align:center;
-
-}
-
-
-
-button{
-
-background:#ffcc00;
-color:#111;
-border:none;
-padding:12px 20px;
-border-radius:8px;
-cursor:pointer;
-font-weight:bold;
-
-}
-
-
-
-.sair{
-
-background:#c00000;
-color:white;
-
-}
-
-
-
-a{
-
-text-decoration:none;
-color:white;
-
-}
-
-
-</style>
-
+<link rel="stylesheet" href="css/style.css">
 
 </head>
 
@@ -99,92 +16,84 @@ color:white;
 <body>
 
 
-
 <header>
 
-<h1>👤 Meu Perfil</h1>
+<div class="logo">
+
+👤 Perfil
+
+</div>
 
 </header>
 
 
 
 
-<div class="container">
+<div class="perfil" id="perfil">
+
+
+</div>
 
 
 
-<div class="card">
 
 
-<h2 id="nome">
+<script src="js/app.js"></script>
+
+
+
+<script>
+
+
+let nome =
+
+pegarUsuario();
+
+
+
+let area =
+
+document.getElementById(
+
+"perfil"
+
+);
+
+
+
+
+
+if(nome){
+
+
+
+let leitura =
+
+pegarUltimaLeitura();
+
+
+
+area.innerHTML =
+
+
+
+`
+
+<h2>
+
+Olá, ${nome}
 
 </h2>
 
 
-
-<p id="status">
-
-</p>
+<br>
 
 
-
-<hr>
-
-
-
-<p>
-
-⭐ Favoritos:
-
-<span id="favoritos"></span>
-
-</p>
-
-
-
-<p>
-
-📚 Biblioteca:
-
-<span id="biblioteca"></span>
-
-</p>
-
-
-
-<p>
-
-📌 Última leitura:
-
-</p>
-
-
-
-<p id="ultimo">
-
-Nenhuma leitura
-
-</p>
-
-
-
-
-<button class="sair" onclick="sair()">
-
-🚪 Sair da conta
-
-</button>
-
-
-
-<br><br>
-
-
-<a href="index.html">
+<a href="favoritos.html">
 
 <button>
 
-🏠 Início
+⭐ Favoritos
 
 </button>
 
@@ -192,39 +101,61 @@ Nenhuma leitura
 
 
 
-</div>
-
-
-</div>
+<br><br>
 
 
 
+<a href="biblioteca.html">
+
+<button>
+
+📚 Biblioteca
+
+</button>
+
+</a>
+
+
+<br><br>
 
 
 
+<button onclick="sairUsuario()">
 
-<script>
+Sair
 
-
-
-let usuario =
-
-localStorage.getItem("nomeUsuario");
+</button>
 
 
 
-if(usuario){
-
-
-document.getElementById("nome").innerHTML =
-
-"Olá, "+usuario;
+`;
 
 
 
-document.getElementById("status").innerHTML =
+if(leitura){
 
-"Conta ativa";
+
+
+area.innerHTML +=
+
+
+
+`
+
+<p>
+
+Última leitura:
+
+Capítulo ${leitura.capitulo}
+
+</p>
+
+`;
+
+
+
+}
+
 
 
 }
@@ -232,104 +163,32 @@ document.getElementById("status").innerHTML =
 else{
 
 
-document.getElementById("nome").innerHTML =
+area.innerHTML =
 
-"Visitante";
 
+`
 
-document.getElementById("status").innerHTML =
+<h2>
 
-"Você não está conectado";
+Você não está logado
 
+</h2>
 
-}
 
+<a href="login.html">
 
+<button>
 
+Entrar
 
+</button>
 
 
-let favoritos =
+</a>
 
-JSON.parse(
 
-localStorage.getItem("favoritos")
+`;
 
-) || [];
-
-
-
-document.getElementById("favoritos").innerHTML =
-
-favoritos.length;
-
-
-
-
-
-
-let biblioteca =
-
-JSON.parse(
-
-localStorage.getItem("biblioteca")
-
-) || [];
-
-
-
-document.getElementById("biblioteca").innerHTML =
-
-biblioteca.length;
-
-
-
-
-
-
-
-
-let ultimo =
-
-JSON.parse(
-
-localStorage.getItem("ultimoLido")
-
-);
-
-
-
-
-if(ultimo){
-
-
-document.getElementById("ultimo").innerHTML =
-
-
-ultimo.manga+
-" - Capítulo "+
-ultimo.capitulo;
-
-
-}
-
-
-
-
-
-
-
-function sair(){
-
-
-
-localStorage.removeItem("login");
-
-localStorage.removeItem("nomeUsuario");
-
-
-
-location.href="login.html";
 
 
 }
@@ -337,7 +196,6 @@ location.href="login.html";
 
 
 </script>
-
 
 
 </body>
