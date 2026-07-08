@@ -102,10 +102,14 @@ area.innerHTML =
 
 
 let mangas = await buscarMangaDex(nome);
+
+console.log("PRIMEIRO MANGÁ COMPLETO:");
 console.log(mangas[0]);
 
-console.log(mangas);
+console.log("RELACIONAMENTOS:");
+console.log(mangas[0].relationships);
 
+console.log(mangas);
 
 area.innerHTML="";
 
