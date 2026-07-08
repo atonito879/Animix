@@ -2,21 +2,27 @@
    ANIMIX - MANGADEX
 ===================================== */
 
-
 // BUSCAR MANGÁS
-async function buscarMangaDex(titulo){
+async function buscarMangaDex(titulo) {
 
-    try{
+    try {
 
         const resposta = await fetch(
-            "/api/mangadex?title=" + encodeURIComponent(titulo)
+            "/api/mangadex?title=" + encodeURIComponent(titulo),
+            {
+                cache: "no-store"
+            }
         );
+
+        if (!resposta.ok) {
+            throw new Error("Erro ao buscar mangás");
+        }
 
         const dados = await resposta.json();
 
         return dados.data || [];
 
-    }catch(e){
+    } catch (e) {
 
         console.error(e);
         return [];
@@ -26,154 +32,57 @@ async function buscarMangaDex(titulo){
 }
 
 
-
-
 // PEGAR CAPA
-async function pegarCapaMangaDex(manga){
+function pegarCapaMangaDex(manga) {
 
-    try{
+    const cover = manga.relationships?.find(
+        rel => rel.type === "cover_art"
+    );
 
+    const fileName = cover?.attributes?.fileName;
 
-        const resposta = await fetch(
-            "/api/cover?id=" + manga.id
-        );
-
-
-        const dados = await resposta.json();
-
-
-
-        if(!dados.data || dados.data.length === 0){
-
-            return "img/sem-capa.jpg";
-
-        }
-
-
-
-        let capa = dados.data.find(
-
-            c => c.attributes.locale === "en"
-
-        );
-
-
-        if(!capa){
-
-            capa = dados.data[0];
-
-        }
-
-
-
-        let arquivo = capa.attributes.fileName;
-
-
-
-        let url =
-
-        "https://uploads.mangadex.org/covers/" +
-        manga.id +
-        "/" +
-        arquivo;
-
-
-
-        console.log(url);
-
-
-
-        return url;
-
-
-
-    }catch(e){
-
-
-        console.error(
-            "Erro capa:",
-            e
-        );
-
-
+    if (!fileName) {
         return "img/sem-capa.jpg";
-
-
     }
 
-
+    return `https://uploads.mangadex.org/covers/${manga.id}/${fileName}`;
 }
 
 
 
-
-
 // DADOS DO MANGÁ
+function dadosMangaDex(manga) {
 
-function dadosMangaDex(manga){
+    const titulo = manga.attributes.title || {};
 
-
-    let titulo = manga.attributes.title;
-
-
-    let nome =
-
-        titulo.en ||
-
+    const nome =
         titulo["pt-br"] ||
-
+        titulo.en ||
         titulo.ja ||
+        Object.values(titulo)[0] ||
+        "Sem título";
 
-        Object.values(titulo)[0];
+    const descricaoObj = manga.attributes.description || {};
 
-
-
-    let descricao =
-
-        manga.attributes.description?.en ||
-
+    const descricao =
+        descricaoObj["pt-br"] ||
+        descricaoObj.en ||
+        Object.values(descricaoObj)[0] ||
         "Sem descrição";
 
-
-
-    let generos =
-
-    manga.attributes.tags
-
-    .filter(
-
-        t =>
-
-        t.attributes.group === "genre"
-
-    )
-
-    .map(
-
-        t =>
-
-        t.attributes.name.en
-
-    );
-
-
+    const generos = (manga.attributes.tags || [])
+        .filter(tag => tag.attributes.group === "genre")
+        .map(tag =>
+            tag.attributes.name["pt-br"] ||
+            tag.attributes.name.en ||
+            Object.values(tag.attributes.name)[0]
+        );
 
     return {
-
-
-        idDex:manga.id,
-
-
-        nome:nome,
-
-
-        descricao:descricao,
-
-
-        generos:generos
-
-
+        idDex: manga.id,
+        nome,
+        descricao,
+        generos
     };
-
 
 }
