@@ -186,9 +186,14 @@ url.get("cap")
 
 
 
+let todosMangas = mangas.concat(
+JSON.parse(localStorage.getItem("mangasAdmin")) || []
+);
+
+
 let manga =
 
-mangas.find(
+todosMangas.find(
 
 m =>
 
