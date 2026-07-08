@@ -1,26 +1,24 @@
-// ===============================
-// BUSCAR MANGÁS
-// ===============================
+/* =====================================
+   ANIMIX - MANGADEX
+===================================== */
 
+
+// BUSCAR MANGÁS
 async function buscarMangaDex(titulo){
 
     try{
 
         const resposta = await fetch(
-            "/api/mangadex?title=" +
-            encodeURIComponent(titulo)
+            "/api/mangadex?title=" + encodeURIComponent(titulo)
         );
 
         const dados = await resposta.json();
 
         return dados.data || [];
 
-    }
+    }catch(e){
 
-    catch(e){
-
-        console.log(e);
-
+        console.error(e);
         return [];
 
     }
@@ -29,48 +27,100 @@ async function buscarMangaDex(titulo){
 
 
 
-// ===============================
-// PEGAR CAPA
-// ===============================
 
+// PEGAR CAPA
 async function pegarCapaMangaDex(manga){
 
-    if(!manga.relationships)
-        return "";
+    try{
 
-    const cover = manga.relationships.find(
 
-        r => r.type === "cover_art"
+        const resposta = await fetch(
+            "/api/cover?id=" + manga.id
+        );
 
-    );
 
-    if(!cover)
-        return "";
+        const dados = await resposta.json();
 
-    if(!cover.attributes)
-        return "";
 
-    const file = cover.attributes.fileName;
 
-    return `https://uploads.mangadex.org/covers/${manga.id}/${file}`;
+        if(!dados.data || dados.data.length === 0){
+
+            return "img/sem-capa.jpg";
+
+        }
+
+
+
+        let capa = dados.data.find(
+
+            c => c.attributes.locale === "en"
+
+        );
+
+
+        if(!capa){
+
+            capa = dados.data[0];
+
+        }
+
+
+
+        let arquivo = capa.attributes.fileName;
+
+
+
+        let url =
+
+        "https://uploads.mangadex.org/covers/" +
+        manga.id +
+        "/" +
+        arquivo;
+
+
+
+        console.log(url);
+
+
+
+        return url;
+
+
+
+    }catch(e){
+
+
+        console.error(
+            "Erro capa:",
+            e
+        );
+
+
+        return "img/sem-capa.jpg";
+
+
+    }
+
 
 }
 
 
 
-// ===============================
-// ORGANIZAR DADOS
-// ===============================
+
+
+// DADOS DO MANGÁ
 
 function dadosMangaDex(manga){
 
-    const titulo = manga.attributes.title;
 
-    const nome =
+    let titulo = manga.attributes.title;
 
-        titulo["pt-br"] ||
+
+    let nome =
 
         titulo.en ||
+
+        titulo["pt-br"] ||
 
         titulo.ja ||
 
@@ -78,72 +128,52 @@ function dadosMangaDex(manga){
 
 
 
-    const descricao =
+    let descricao =
 
-        manga.attributes.description.en ||
+        manga.attributes.description?.en ||
 
-        "";
-
-
-
-    const generos =
-
-        manga.attributes.tags
-
-        .filter(
-
-            t => t.attributes.group=="genre"
-
-        )
-
-        .map(
-
-            t=>t.attributes.name.en
-
-        );
+        "Sem descrição";
 
 
 
-    return{
+    let generos =
+
+    manga.attributes.tags
+
+    .filter(
+
+        t =>
+
+        t.attributes.group === "genre"
+
+    )
+
+    .map(
+
+        t =>
+
+        t.attributes.name.en
+
+    );
+
+
+
+    return {
+
 
         idDex:manga.id,
 
-        nome,
 
-        descricao,
+        nome:nome,
 
-        generos
+
+        descricao:descricao,
+
+
+        generos:generos
+
 
     };
 
-}
-
-
-
-// ===============================
-// CAPÍTULOS
-// ===============================
-
-async function buscarCapitulosDex(id){
-
-    try{
-
-        const resposta = await fetch(
-
-            "/api/chapters?id="+id
-
-        );
-
-        const dados = await resposta.json();
-
-        return dados.data || [];
-
-    }
-
-    catch{
-
-        return [];
-
-    }
 
 }
