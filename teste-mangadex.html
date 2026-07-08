@@ -101,15 +101,22 @@ area.innerHTML =
 
 
 
-let mangas =
-
-await buscarMangaDex(nome);
+let mangas = await buscarMangaDex(nome);
 
 
+console.log(mangas);
 
 
 area.innerHTML="";
 
+
+if(mangas.length == 0){
+
+area.innerHTML = "Nenhum mangá encontrado";
+
+return;
+
+}
 
 
 
